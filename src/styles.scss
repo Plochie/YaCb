@@ -1,0 +1,48 @@
+::selection {
+	background: hotpink;
+	color: white;
+}
+
+html,
+body {
+	font-family: var(--font-sans);
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+*,
+*::after,
+*::before {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeOut {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+@keyframes spinnerAnimation {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

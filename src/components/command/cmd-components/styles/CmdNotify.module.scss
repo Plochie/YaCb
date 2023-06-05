@@ -1,0 +1,21 @@
+.notify-container {
+	padding: 10px;
+	margin-top: 10px;
+	border-radius: 10px;
+	background-color: rgb(0 0 0 / 0.2);
+	// border-left: 5px solid rgb(72, 72, 211);
+	display: flex;
+
+	.title {
+		font-weight: bold;
+		font-size: 1em;
+	}
+	.desc {
+		font-size: 0.9em;
+	}
+
+	.icon {
+		font-size: var(--item-icon-size);
+		margin-right: 7.5px;
+	}
+}

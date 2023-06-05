@@ -1,0 +1,37 @@
+@import '../../styles/root', '../../styles/dark';
+
+kbd {
+	display: inline-block;
+	border: 1px solid var(--gray7);
+	border-radius: 4px;
+	padding: 0.1em 0.5em;
+	margin: 0 0.2em;
+	background-color: transparent;
+	font-size: 0.7em;
+}
+.command-bar-container {
+	// variables
+	--cmd-input-font-size: 21px;
+	--cmd-group-title-size: 14px;
+	--cmd-group-item-size: 17px;
+	--cmd-max-height: 400px;
+
+	--user-input-icon-size: 1.75em;
+	--item-icon-size: 1.6em;
+
+	min-width: 600px;
+	display: flex;
+	margin-top: 25px;
+	flex: 0.6;
+	flex-direction: column;
+	font-family: var(--font-sans);
+	box-shadow: var(--cmdk-shadow);
+	transition: transform 100ms ease;
+	background: var(--gray3);
+	padding: 8px;
+	border-radius: 12px;
+	width: 100%;
+	max-height: var(--cmd-max-height);
+	// border: 5px solid lightgray;
+	// overflow: hidden;
+}

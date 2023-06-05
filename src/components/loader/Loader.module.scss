@@ -1,0 +1,11 @@
+.loader-container {
+	display: flex;
+
+	.icon {
+		font-size: 1.7em;
+		color: rgb(255 255 255 / 0.75);
+		:global {
+			animation: 0.75s infinite linear spinnerAnimation;
+		}
+	}
+}

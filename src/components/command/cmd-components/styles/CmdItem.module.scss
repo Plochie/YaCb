@@ -1,0 +1,28 @@
+.item {
+	padding: 5px 8px 5px 8px;
+	margin-top: 5px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	// border: 1px solid red;
+	font-size: var(--cmd-group-item-size);
+	border-radius: 6px;
+
+	.item-children {
+		flex: 1;
+		word-break: break-word;
+	}
+
+	.icon {
+		margin-right: 0.75em;
+		font-size: var(--item-icon-size);
+	}
+
+	.shortcut {
+		margin-left: auto;
+	}
+
+	&:hover {
+		background-color: var(--gray3);
+	}
+}
