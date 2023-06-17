@@ -3,10 +3,10 @@
 	// height: min(330px, calc(var(--cmdk-list-height)));
 	margin-top: 8px;
 	overflow: auto;
-	// overscroll-behavior: contain;
+	overscroll-behavior: contain;
 	color: var(--gray11);
 	display: flex;
-	flex-direction: column;
+	// flex-direction: column;
 
 	.footer-container {
 		margin-top: 5px;

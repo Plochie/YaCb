@@ -15,9 +15,10 @@ module.exports = {
 		ecmaVersion: 'latest',
 		sourceType: 'module',
 	},
-	plugins: ['react', '@typescript-eslint'],
+	plugins: ['react', '@typescript-eslint', 'react-refresh'],
 	ignorePatterns: ['**/*.scss', '**/*.svg', '**/*.css'],
 	rules: {
+		'react-refresh/only-export-components': 'warn',
 		eqeqeq: 'warn',
 		'@typescript-eslint/no-explicit-any': 'off',
 		'react/react-in-jsx-scope': 'off',

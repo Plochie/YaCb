@@ -1,48 +1,33 @@
 import Command from 'app-components/command/cmd-components';
-import { CommandContext } from 'app-components/command/CommandBar';
-import { invoke } from 'app-src/wrapper/ipc-wrapper';
-import { useContext, createElement } from 'react';
-import { FcBookmark } from 'react-icons/fc';
+import { CommandContext } from 'app-components/command/context';
+import { useContext } from 'react';
 
 export const TriggerResultGroup = () => {
 	const { triggerResult } = useContext(CommandContext);
-
-	return (
-		<Command.Group title="Result">
-			{triggerResult.data.map((result, idx) => {
-				return triggerResult.renderResultItem ? (
-					<triggerResult.renderResultItem key={idx} title={result} />
-				) : (
-					<Command.Item
-						key={idx}
-						title={result}
-						icon={<FcBookmark />}
-						onClick={() => {
-							console.log('Clicked from isolated item');
-							invoke('open_resource', { resource: result });
-							return 0;
-						}}
-					></Command.Item>
-				);
-			})}
-			<Command.Item
-				title="no result found"
-				icon={<FcBookmark />}
-				onClick={() => {
-					console.log('Clicked from isolated item');
-					return 0;
-				}}
-			></Command.Item>
+	//
+	return triggerResult && triggerResult.items ? (
+		<Command.Group title={triggerResult?.groupTitle}>
+			{triggerResult.items &&
+				triggerResult.items.map((item, idx) => {
+					// preference to component defined with item array
+					return item.renderResultItem ? (
+						<item.renderResultItem
+							key={idx}
+							title={item.title}
+							data={item.data}
+						/>
+					) : (
+						// if not present use generic component
+						// <triggerResult.renderResultItem
+						// 	key={idx}
+						// 	title={item.title}
+						// 	data={item.data}
+						// />
+						<></>
+					);
+				})}
 		</Command.Group>
-		// <Command.Group title="Result">
-		// 	<Command.Item
-		// 		title={'result item'}
-		// 		icon={<FcBookmark />}
-		// 		onClick={() => {
-		// 			console.log('Clicked from isolated item');
-		// 			return 0;
-		// 		}}
-		// 	></Command.Item>
-		// </Command.Group>
+	) : (
+		<></>
 	);
 };

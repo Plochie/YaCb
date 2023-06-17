@@ -15,11 +15,14 @@ kbd {
 	--cmd-group-title-size: 14px;
 	--cmd-group-item-size: 17px;
 	--cmd-max-height: 400px;
+	--cmd-min-width: 700px;
 
 	--user-input-icon-size: 1.75em;
 	--item-icon-size: 1.6em;
 
-	min-width: 600px;
+	min-width: var(--cmd-min-width);
+	// max-height: var(--cmd-max-height);
+	max-height: var(--cmd-max-height);
 	display: flex;
 	margin-top: 25px;
 	flex: 0.6;
@@ -31,7 +34,8 @@ kbd {
 	padding: 8px;
 	border-radius: 12px;
 	width: 100%;
-	max-height: var(--cmd-max-height);
+	word-break: break-word;
+
 	// border: 5px solid lightgray;
 	// overflow: hidden;
 }

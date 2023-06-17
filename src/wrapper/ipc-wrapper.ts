@@ -1,7 +1,8 @@
 /* eslint-disable no-restricted-imports */
-import { invoke as tauriInvoke, InvokeArgs } from '@tauri-apps/api/tauri';
 import { isRegistered, register } from '@tauri-apps/api/globalShortcut';
+import { InvokeArgs, invoke as tauriInvoke } from '@tauri-apps/api/tauri';
 import { appWindow as tauriAppWindow } from '@tauri-apps/api/window';
+import { writeText, readText } from '@tauri-apps/api/clipboard';
 
 const IS_VITE_DEV = false;
 
@@ -53,6 +54,10 @@ export const registerShortcut = (
 		return Promise.resolve() as any;
 	}
 	return register(shortcut, handler);
+};
+
+export const writeToClipboard = async (text: string) => {
+	await writeText(text);
 };
 
 export const appWindow = tauriAppWindow;

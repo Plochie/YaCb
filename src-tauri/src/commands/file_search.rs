@@ -1,85 +1,127 @@
-#![allow(unused)]
-use once_cell::sync::Lazy;
-use serde::{Deserialize, Serialize};
-use std::fs;
-use std::io::ErrorKind;
-use std::process::Command;
-use std::sync::Mutex;
-use std::time::Instant;
-use std::{
-    fs::File,
-    io::{self, prelude::*, BufRead, BufReader, Lines},
-    path::Path,
-};
-// use std::fs::File;
-// use std::io::{self, BufRead, BufReader, Lines};
-// use std::path::Path;
+use crate::helper::file_search_helper::{create_file_data_threaded_csv, read_file_csv, CsvRecord};
+use std::{sync::RwLock, thread::available_parallelism, time::Instant};
 
-use fuzzy_matcher::clangd::ClangdMatcher;
-use fuzzy_matcher::skim::SkimMatcherV2;
-use fuzzy_matcher::FuzzyMatcher;
 //
-pub static ARRAY: Mutex<Vec<String>> = Mutex::new(Vec::new());
-
-// pub static GLOBAL_STORAGE: Lazy<Mutex<Vec<String>>> = Lazy::new(|| Mutex::new(Vec::new()));
-
-// pub fn set_file_content(value: Vec<String>) {
-//     *GLOBAL_STORAGE.lock().unwrap() = value;
-// }
-
-// pub fn read_file_content() -> String {
-//     let contents = fs::read_to_string("./external_binaries/files.log")
-//         .expect("Should have been able to read the file");
-//     return contents;
-// }
-
-// The output is wrapped in a Result to allow matching on errors
-// Returns an Iterator to the Reader of the lines of the file.
-fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-where
-    P: AsRef<Path>,
-{
-    let file = File::open(filename)?;
-    Ok(io::BufReader::new(file).lines())
+pub struct FileStorage {
+    all_files: Vec<CsvRecord>,
+    consider_hidden: bool,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct MatchedFile {
-    file: String,
-    score: i64,
-}
+pub static FILE_STORAGE: RwLock<FileStorage> = RwLock::new(FileStorage {
+    all_files: Vec::new(),
+    consider_hidden: false,
+});
 
-#[tauri::command(async)]
-pub async fn get_indexed_files(fetch_latest: bool, query: String) -> Vec<String> {
-    //
-    let now = Instant::now();
-    // let matcher = ClangdMatcher::default();
-    let mut matched_strings: Vec<MatchedFile> = Vec::new();
-    //
-    if let Ok(arr) = ARRAY.lock() {
-        for line in arr.iter() {
-            if line.to_lowercase().contains(&query.to_lowercase()) {
-                let m = MatchedFile {
-                    file: line.to_string(),
-                    score: 0,
-                };
-                matched_strings.push(m);
-            }
+/**
+ *
+ */
+pub fn read_file_in_cache(create_file: bool) {
+    if let Ok(mut storage) = FILE_STORAGE.write() {
+        //
+        let res = read_file_csv(
+            &tauri::api::path::home_dir().unwrap(),
+            storage.consider_hidden,
+            create_file,
+        );
+        //
+        if let Ok(r) = res {
+            storage.all_files = r;
         }
     }
-    // matched_strings.sort_by(|a, b| b.score.cmp(&a.score));
+}
+/**
+ *
+ */
+fn lowercase_match(line: &CsvRecord, query: &str) -> bool {
+    line.path.to_lowercase().contains(&query.to_lowercase())
+}
+/**
+ *
+ */
+fn generic_search_thread(
+    query: &str,
+    list: &Vec<CsvRecord>,
+    search_fn: fn(&CsvRecord, &str) -> bool,
+) -> Vec<CsvRecord> {
+    //
+    let mut matched_records: Vec<CsvRecord> = Vec::new();
+    //
+    let mut cpu_count: usize = 4;
 
-    let mut top_matches: Vec<String> = Vec::new();
+    if let Ok(parallel) = available_parallelism() {
+        cpu_count = parallel.get();
+    }
+    //
+    std::thread::scope(|scope| {
+        let mut handlers = Vec::new();
+        //
+        for n in 0..cpu_count {
+            // run logic in tread
+            // let cloned_query: String = String::clone(&query.to_string());
+            let handler = scope.spawn(move || {
+                //
+                let mut matches: Vec<CsvRecord> = Vec::new();
+                //
+                let files_count = list.len();
+                let split_size = (files_count / cpu_count) + 1;
+                let index_start = n * split_size + n;
+                let mut index_end = index_start + split_size;
+                if index_end >= files_count {
+                    index_end = files_count - 1;
+                }
+                //
+                for index in index_start..index_end {
+                    let line = list.get(index).unwrap();
+                    if search_fn(&line, query) {
+                        matches.push(line.clone());
+                    }
+                }
 
-    // for matched_string in matched_strings {
-    //     top_matches.push(String::clone(&matched_string.file))
-    // }
-    let mut size = 10;
-    if matched_strings.len() < 10 {
+                matches
+            });
+            handlers.push(handler);
+        }
+        // join and get result
+        for h in handlers {
+            if let Ok(result) = h.join() {
+                for i in result {
+                    matched_records.push(i);
+                }
+            }
+        }
+    });
+
+    return matched_records;
+}
+
+/**
+ *
+ */
+#[tauri::command(async)]
+pub async fn get_indexed_files(query: String, fetch_latest: bool) -> Vec<CsvRecord> {
+    //
+    let now = Instant::now();
+
+    if fetch_latest {
+        create_file_data_threaded_csv(&tauri::api::path::home_dir().unwrap(), true)
+            .expect("not able to create indexing file");
+    }
+
+    let mut matched_strings: Vec<CsvRecord> = Vec::new();
+    //
+    if let Ok(storage) = FILE_STORAGE.read() {
+        matched_strings =
+            generic_search_thread(query.as_str(), &storage.all_files, lowercase_match);
+    }
+    //
+
+    let mut top_matches: Vec<CsvRecord> = Vec::new();
+    let mut size = 15;
+    if matched_strings.len() < size {
         size = matched_strings.len();
     }
     for index in 0..size {
-        top_matches.push(String::clone(&matched_strings[index].file))
+        top_matches.push(matched_strings[index].clone());
     }
     println!(
         "[get_indexed_files] Took {} milliseconds",

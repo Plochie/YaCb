@@ -1,4 +1,4 @@
-import { CommandContext } from 'app-src/components/command/CommandBar';
+import { CommandContext } from 'app-components/command/context';
 import { Loader } from 'app-src/components/loader/Loader';
 import { useContext } from 'react';
 import { CgSearch } from 'react-icons/cg';
@@ -21,18 +21,9 @@ export const Input = () => {
 					}}
 				></input>
 				<div className={styles['right-container']}>
-					{/* <IoSparklesSharp
-						className={styles.icon}
-						style={{ color: '#ffc107' }}
-					/> */}
 					{!commandContext.isActionLoading && (
 						<CgSearch className={styles.icon} />
 					)}
-					{/* <AiOutlineDrag
-					className={styles.icon}
-					data-tauri-drag-region
-					style={{ cursor: 'move', zIndex: '999' }}
-				/> */}
 					<Loader isLoading={commandContext.isActionLoading} />
 				</div>
 			</div>

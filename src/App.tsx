@@ -27,11 +27,11 @@ function App() {
 		(async (o) => {
 			if (o) {
 				await appWindow.show();
-				invoke('backend_logging', { msg: 'window should be open' });
+				await invoke('backend_logging', { msg: 'window should be open' });
 			} //
 			else {
 				await appWindow.hide();
-				invoke('backend_logging', { msg: 'window should be hidden' });
+				await invoke('backend_logging', { msg: 'window should be hidden' });
 			}
 		})(isOpen);
 	}, [isOpen]);

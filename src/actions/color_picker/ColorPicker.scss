@@ -1,0 +1,35 @@
+.responsive {
+	padding: 15px;
+	display: grid;
+	grid-template-rows: 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr;
+	grid-template-areas:
+		'color-picker shades1'
+		'color-picker shades2'
+		'color-picker color-string';
+	gap: 10px;
+	//
+	.react-colorful {
+		width: auto;
+		height: auto;
+	}
+	//
+	.shades {
+		display: flex;
+		flex-direction: row;
+		border: 1px solid lightgrey;
+		text-align: center;
+		//
+		.shade {
+			height: 25px;
+			flex: 1;
+			border-radius: 1px;
+			transition: 0.1s ease-in-out;
+
+			&:hover {
+				transform: scaleX(1.1) scaleY(1.3);
+				z-index: 10;
+			}
+		}
+	}
+}

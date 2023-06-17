@@ -1,5 +1,5 @@
-import { FcRadarPlot } from 'react-icons/fc';
 import Command from 'app-components/command/cmd-components';
+import { FcRadarPlot } from 'react-icons/fc';
 import { Action } from '..';
 
 export const RenderElement = () => {

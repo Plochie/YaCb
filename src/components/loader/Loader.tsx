@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import styles from './Loader.module.scss';
 import { ImSpinner2 } from 'react-icons/im';
+import styles from './Loader.module.scss';
 
 interface LoaderProps {
 	isLoading: boolean;

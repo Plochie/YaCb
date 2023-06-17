@@ -20,6 +20,11 @@
 			"globalShortcut": {
 				"all": true
 			},
+			"clipboard": {
+				"all": true,
+				"writeText": true,
+				"readText": true
+			},
 			"window": {
 				"all": false,
 				"center": false,
@@ -52,6 +57,9 @@
 				"startDragging": true,
 				"unmaximize": false,
 				"unminimize": false
+			},
+			"path": {
+				"all": true
 			}
 		},
 		"bundle": {
@@ -82,7 +90,7 @@
 				"transparent": true,
 				"alwaysOnTop": true,
 				"center": false,
-				"width": 800,
+				"width": 750,
 				"height": 460
 			}
 		],

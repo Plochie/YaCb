@@ -1,8 +1,15 @@
+use serde::{Deserialize, Serialize};
 use std::process::Command;
 use std::time::Instant;
 
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CommandResult {
+    stdout: Option<String>,
+    code: i32,
+}
+
 #[tauri::command]
-pub fn run_cmd(command_str: &str) -> String {
+pub fn run_cmd(command_str: &str, should_return_output: bool) -> CommandResult {
     let now = Instant::now();
     let output = if cfg!(target_os = "windows") {
         Command::new("cmd")
@@ -17,9 +24,20 @@ pub fn run_cmd(command_str: &str) -> String {
             .expect("failed to execute process")
     };
 
-    let stdout = String::from_utf8(output.stdout).unwrap();
     let elapsed = now.elapsed().as_millis();
     println!("[run_cmd] Took {} milliseconds", elapsed);
 
-    return stdout;
+    if should_return_output {
+        if let Ok(stdout) = String::from_utf8(output.stdout) {
+            return CommandResult {
+                stdout: Some(stdout),
+                code: 0,
+            };
+        }
+    }
+
+    CommandResult {
+        stdout: None,
+        code: -1,
+    }
 }

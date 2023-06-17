@@ -1,46 +1,18 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 //
-// use commands::*;
-use tauri::*;
-
-use commands::file_search::ARRAY;
-use std::sync::Mutex;
-use std::{
-    fs::File,
-    io::{self, prelude::*, BufRead, BufReader, Lines},
-    path::Path,
-};
-
-fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-where
-    P: AsRef<Path>,
-{
-    let file = File::open(filename)?;
-    Ok(io::BufReader::new(file).lines())
-}
-
-fn cache_files_data() {
-    if let Ok(mut arr) = ARRAY.lock() {
-        //
-        let file_path = "./external_binaries/files.log";
-        //
-        if let Ok(lines) = read_lines(file_path) {
-            for line in lines {
-                //
-                if let Ok(l) = line {
-                    arr.push(l);
-                }
-            }
-        }
-    }
-}
-
+// extern crate pretty_env_logger;
+#[macro_use]
+extern crate log;
 mod commands;
+mod helper;
+use crate::commands::file_search;
+use std::time::Instant;
+use tauri::*;
 
 #[tauri::command]
 fn backend_logging(msg: &str) {
-    println!("[frontend_log] {}, {}", msg, ARRAY.lock().unwrap().len());
+    println!("[frontend_log] {}", msg);
 }
 
 fn make_tray() -> SystemTray {
@@ -51,20 +23,26 @@ fn make_tray() -> SystemTray {
     return SystemTray::new().with_menu(menu);
 }
 
-// TODO:  main
-// FIXME:  main
-// IMPROVEMENT: improvement
-// BUG: bug
+fn init_app() {
+    // std::env::set_var("YACB_APP_LOG", "info");
+    // pretty_env_logger::init_custom_env("YACB_APP_LOG");
+    //
+    helper::config_helper::populate_config();
+    // file_search::create_file_data();
+    file_search::read_file_in_cache(false);
+}
 
 /**
  * TODO:  main
  * FIXME:  main
  * IMPROVEMENT: improvement
- * BUG: bug
  */
+
 fn main() {
     //
-    cache_files_data();
+    let now = Instant::now();
+    init_app();
+    println!("[preprocessor] took {} ms", now.elapsed().as_millis());
     //
     tauri::Builder::default()
         .system_tray(make_tray())

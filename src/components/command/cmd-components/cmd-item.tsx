@@ -9,18 +9,27 @@ export type ItemType = React.ReactElement<
 
 export interface ItemProps {
 	title: string;
-	triggerWord?: string;
-	onTriggerWordAction?: TriggerWordAction;
+	data?: any;
+	alwaysVisible?: boolean;
+	// triggerWord?: string;
+	// onTriggerWordAction?: TriggerWordAction;
 	icon?: React.ReactElement;
 	children?: React.ReactNode;
 	shortcut?: string[];
 	onClick?: () => number;
+	onHover?: () => void;
+	containerStyles?: React.CSSProperties;
 }
 //
 export const Item = (props: ItemProps) => {
 	//
 	return (
-		<div className={styles.item} onClick={props.onClick}>
+		<div
+			className={styles.item}
+			onClick={props.onClick}
+			style={props.containerStyles}
+			onMouseEnter={props.onHover}
+		>
 			{props.icon && <div className={styles.icon}>{props.icon}</div>}
 			<div className={styles['item-children']}>
 				{props.children ? props.children : props.title}

@@ -1,22 +1,26 @@
-export * from "./cmd-page";
-export * from "./cmd-group";
-export * from "./cmd-item";
-export * from "./cmd-input";
-export * from "./cmd-body";
-export * from "./cmd-empty";
-export * from "./cmd-footer";
-export * from "./cmd-wrapper";
+export * from './cmd-body';
+export * from './cmd-empty';
+export * from './cmd-footer';
+export * from './cmd-group';
+export * from './cmd-input';
+export * from './cmd-item';
+export * from './cmd-page';
+export * from './cmd-wrapper';
+import { TriggerType } from 'app-src/actions';
 
-import { Page } from "./cmd-page";
-import { Group } from "./cmd-group";
-import { Item } from "./cmd-item";
-import { Input } from "./cmd-input";
-import { Body } from "./cmd-body";
-import { Empty } from "./cmd-empty";
-import { Footer } from "./cmd-footer";
-import { Wrapper } from "./cmd-wrapper";
-import { Notify } from "./cmd-notify";
-
+import { Body } from './cmd-body';
+import { Empty } from './cmd-empty';
+import { Footer } from './cmd-footer';
+import { Group } from './cmd-group';
+import { Input } from './cmd-input';
+import { Item } from './cmd-item';
+import { Notify } from './cmd-notify';
+import { Page } from './cmd-page';
+import { Wrapper } from './cmd-wrapper';
+import { SidePanel } from './cmd-sidepanel';
+//
+export const runOnlyOnce = { status: true };
+//
 const Command = {
 	Page,
 	Group,
@@ -27,6 +31,7 @@ const Command = {
 	Footer,
 	Wrapper,
 	Notify,
+	SidePanel,
 };
 
 export default Command;

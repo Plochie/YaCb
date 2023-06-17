@@ -2,11 +2,15 @@
 	"cSpell.words": [
 		"clangd",
 		"cmdk",
+		"cpus",
 		"fullscreen",
 		"kbar",
 		"Mantine",
+		"mexp",
+		"mult",
 		"paresh",
 		"tauri",
+		"thiserror",
 		"vercel"
 	],
 	"cSpell.ignorePaths": [
@@ -28,40 +32,7 @@
 	"rust-analyzer.linkedProjects": [
 		".\\src-tauri\\Cargo.toml",
 		".\\src-tauri\\Cargo.toml",
+		".\\src-tauri\\Cargo.toml",
 		".\\src-tauri\\Cargo.toml"
-	],
-	"todo-tree.highlights.defaultHighlight": {
-		"icon": "alert",
-		"type": "text",
-		"opacity": 50,
-		"gutterIcon": true,
-		"fontWeight": "bold"
-	},
-	"todo-tree.regex.regex": "(//|#|<!--|\\*)(\\s|\\t)*($TAGS)",
-	"todo-tree.highlights.customHighlight": {
-		"BUG": {
-			"type": "tag",
-			"foreground": "#C92A2A",
-			"iconColour": "#C92A2A"
-		},
-		"TODO": {
-			"icon": "tag",
-			"type": "tag",
-			"foreground": "#4C6EF5",
-			"iconColour": "#4C6EF5"
-		},
-		"FIXME": {
-			"type": "tag",
-			"foreground": "#C92A2A",
-			"iconColour": "#C92A2A"
-		},
-		"IMPROVEMENT": {
-			"type": "tag",
-			"foreground": "#087F5B",
-			"iconColour": "#087F5B",
-			"icon": "zap"
-		}
-	},
-	"todo-tree.tree.disableCompactFolders": false,
-	"todo-tree.tree.hideTreeWhenEmpty": true
+	]
 }

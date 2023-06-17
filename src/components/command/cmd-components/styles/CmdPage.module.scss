@@ -1,6 +1,26 @@
-.container {
-	display: flex;
-	flex-direction: column;
-	height: 100%;
+.page-container {
+	flex-direction: row;
 	border-top: 1px solid var(--gray1);
+	position: relative;
+	width: 100%;
+	display: flex;
+	overflow: auto;
+	overflow-y: scroll;
+
+	.groups-container {
+		flex: 1;
+	}
+
+	.panel-container {
+		width: 40%;
+		height: 100%;
+		position: -webkit-sticky;
+		position: sticky;
+		top: 0;
+		align-self: flex-start;
+		overflow-x: hidden;
+		border-left: 3px solid #2e2d2d;
+		padding: 0.7em;
+		text-align: center;
+	}
 }
