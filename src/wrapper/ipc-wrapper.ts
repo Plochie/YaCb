@@ -8,9 +8,10 @@ const IS_VITE_DEV = false;
 
 type InvokeCommands =
 	| 'backend_logging'
-	| 'get_indexed_files'
+	// | 'get_indexed_files'
 	| 'run_cmd'
-	| 'open_resource';
+	| 'open_resource'
+	| 'get_matched_files';
 
 /**
  *

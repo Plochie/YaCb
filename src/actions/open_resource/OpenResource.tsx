@@ -1,10 +1,8 @@
-import { useContext, useState } from 'react';
 import Command from 'app-components/command/cmd-components';
+import { useTriggerResult } from 'app-src/hooks';
 import { invoke } from 'app-src/wrapper/ipc-wrapper';
 import { FcFile, FcOpenedFolder } from 'react-icons/fc';
-import { Action, TriggerWordAction } from '..';
-import { CommandContext } from 'app-components/command/context';
-import styles from './OpenResource.module.scss';
+import { TriggerWordAction, UserAction } from '..';
 
 /**
  *
@@ -21,10 +19,11 @@ const openResourceAction: TriggerWordAction = ({
 			//
 			setIsActionLoading(true);
 			const invokePromise = invoke<{ path: string; t: string }[]>(
-				'get_indexed_files',
+				// IMPROVEMENT: should use get_matched_files ?
+				'get_matched_files',
 				{
-					fetchLatest: false,
-					query,
+					// fetchLatest: false,
+					query: `${query}`,
 				}
 			);
 			//
@@ -51,53 +50,30 @@ const openResourceAction: TriggerWordAction = ({
 /**
  *
  */
-const RenderPage = () => {
-	const context = useContext(CommandContext);
-	const [selectedItem, setSelectedItem] = useState<any>({});
-
+const RenderGroup = () => {
+	const triggerResult = useTriggerResult(RenderGroup);
+	//
 	return (
-		<Command.Page
-			id="openResource"
-			trigger={{
-				word: 'o ',
-				action: openResourceAction,
-				pageId: 'openResource',
-			}}
-		>
-			{/* panel */}
-			<Command.SidePanel>
-				<div className={styles.panel}>
-					<div className={styles.icon}>
-						{selectedItem.t === 'd' ? <FcOpenedFolder /> : <FcFile />}
-					</div>
-					<div>
-						<span>{selectedItem.path}</span>
-					</div>
-				</div>
-			</Command.SidePanel>
-			<Command.Group>
-				{context.triggerResult?.items.map((item, index) => {
-					return (
-						<Command.Item
-							key={index}
-							title={item.data.path}
-							icon={item.data.t === 'd' ? <FcOpenedFolder /> : <FcFile />}
-							onClick={() => {
-								console.log('Clicked from use defined item item');
-								return 0;
-							}}
-							onHover={() => {
-								setSelectedItem(item.data);
-							}}
-						></Command.Item>
-					);
-				})}
-			</Command.Group>
-		</Command.Page>
+		<Command.Group title="Open Resource">
+			{triggerResult?.items.map((item, index) => {
+				return (
+					<Command.Item
+						key={index}
+						title={item.data.path}
+						icon={item.data.t === 'd' ? <FcOpenedFolder /> : <FcFile />}
+						onClick={() => {
+							console.log('Clicked from use defined item item');
+							return 0;
+						}}
+					></Command.Item>
+				);
+			})}
+		</Command.Group>
 	);
 };
 
-export const OpenResource: Action = {
-	resultPage: RenderPage,
-	pageId: 'openResource',
+export const OpenResource: UserAction = {
+	resultGroup: RenderGroup,
+	action: openResourceAction,
+	word: 'o ',
 };

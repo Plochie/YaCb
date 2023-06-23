@@ -29,6 +29,7 @@ export default defineConfig(async () => ({
 			'app-src': '/src',
 			'app-components': '/src/components',
 			'app-config': '/src/config',
+			'app-store': '/src/store',
 		},
 	},
 }));

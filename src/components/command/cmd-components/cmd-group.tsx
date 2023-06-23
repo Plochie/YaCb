@@ -1,9 +1,11 @@
 import { CommandContext } from 'app-components/command/context';
+import { Action } from 'app-src/actions';
+import { lastPublishedKeyChangeEvent } from 'app-src/events';
+import { UseKeyChangeEventDetail, useKeyChangeEvent } from 'app-src/hooks';
 import MiniSearch from 'minisearch';
-import React, { ReactNode, useContext } from 'react';
+import React, { ReactNode, useContext, useState } from 'react';
 import { ItemType } from './cmd-item';
 import styles from './styles/CmdGroup.module.scss';
-import { TriggerType } from 'app-src/actions';
 
 const miniSearch = new MiniSearch({
 	fields: ['title'], // fields to index for full-text search
@@ -17,7 +19,7 @@ export type GroupType = React.ReactElement<
 
 const visibleItems = (
 	inputString: string,
-	matchedTrigger: TriggerType | undefined,
+	matchedActions: Set<Action> | undefined,
 	itemNodes: React.ReactNode[] | undefined
 ): React.ReactNode[] => {
 	//
@@ -31,12 +33,20 @@ const visibleItems = (
 	// miniSearch.addAll(
 	// 	items.map((item, id) => ({ id, title: item.props.title, item }))
 	// );
-	const query = inputString.substring(
-		matchedTrigger ? matchedTrigger.word.length : 0
-	);
-	const searchedItems = items.filter((i) =>
-		i.props?.title?.toLowerCase().includes(query)
-	);
+	// match items for all matching actions
+
+	// const query = inputString.substring(
+	// 	matchedTrigger ? matchedTrigger.word.length : 0
+	// );
+	let searchedItems: ItemType[] = [];
+
+	matchedActions?.forEach((actions) => {
+		const query = inputString.substring(actions.word.length);
+		const matched = items.filter((i) =>
+			i.props?.title?.toLowerCase().includes(query)
+		);
+		searchedItems = [...searchedItems, ...matched];
+	});
 	// get elements which should be always visible, irrespective of title string
 	// IMPROVEMENT: better way to get alwaysVisible
 	const alwaysVisibleItems =
@@ -70,7 +80,8 @@ const visibleItems = (
 
 interface GroupProps {
 	title?: string;
-	children?: React.ReactNode;
+	children?: React.ReactNode[] | React.ReactNode;
+	itemIndex?: number;
 }
 
 /**
@@ -81,14 +92,47 @@ interface GroupProps {
 export const Group = (props: GroupProps) => {
 	//
 	const commandContext = useContext(CommandContext);
+	// const [visibleChildren, setVisibleChildren] = useState<React.ReactNode[]>([]);
+	const [keyChangeData, setKeyChangeData] = useState<UseKeyChangeEventDetail>();
 	//
-	const visibleChildren = visibleItems(
-		commandContext.inputString,
-		commandContext.matchedTrigger,
-		React.Children.toArray(props.children ?? [])
+	useKeyChangeEvent((data) => {
+		setKeyChangeData(data.detail);
+		// console.log({ data });
+	});
+	//
+	/**
+	 * IMPROVEMENT: is there a better way to handle?
+	 */
+	// let visibleChildren: React.ReactNode[] = visibleItems(
+	// 	// FIXME: blank string is mistake
+	// 	'',
+	// 	commandContext.matchedTrigger,
+	// 	React.Children.toArray(props.children ?? [])
+	// );
+	let visibleChildren: React.ReactNode[] = React.Children.toArray(
+		props.children
 	);
+
+	if (keyChangeData) {
+		visibleChildren = visibleItems(
+			keyChangeData?.currInput,
+			commandContext.matchedActions,
+			React.Children.toArray(props.children ?? [])
+		);
+	} //
+	else {
+		const ev = lastPublishedKeyChangeEvent();
+		if (ev) {
+			visibleChildren = visibleItems(
+				ev.currInput,
+				commandContext.matchedActions,
+				React.Children.toArray(props.children ?? [])
+			);
+		}
+	}
 	//
-	return visibleChildren.length !== 0 ? (
+	//
+	return (
 		<div className={styles['group-container']}>
 			{props.title && props.title.trim() !== '' && (
 				<div className={styles.title}>
@@ -97,7 +141,5 @@ export const Group = (props: GroupProps) => {
 			)}
 			{visibleChildren}
 		</div>
-	) : (
-		<></>
 	);
 };

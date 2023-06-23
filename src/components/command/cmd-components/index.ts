@@ -6,7 +6,6 @@ export * from './cmd-input';
 export * from './cmd-item';
 export * from './cmd-page';
 export * from './cmd-wrapper';
-import { TriggerType } from 'app-src/actions';
 
 import { Body } from './cmd-body';
 import { Empty } from './cmd-empty';

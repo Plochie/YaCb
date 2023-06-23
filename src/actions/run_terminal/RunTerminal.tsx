@@ -19,6 +19,6 @@ const RenderElement = () => {
 	);
 };
 
-export const RunTerminal: Action = {
-	RenderElement,
-};
+// export const RunTerminal: Action = {
+// 	RenderElement,
+// };

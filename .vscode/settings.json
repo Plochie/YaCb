@@ -11,7 +11,8 @@
 		"paresh",
 		"tauri",
 		"thiserror",
-		"vercel"
+		"vercel",
+		"zustand"
 	],
 	"cSpell.ignorePaths": [
 		"package-lock.json",
@@ -34,5 +35,6 @@
 		".\\src-tauri\\Cargo.toml",
 		".\\src-tauri\\Cargo.toml",
 		".\\src-tauri\\Cargo.toml"
-	]
+	],
+	"editor.fontSize": 12.5
 }

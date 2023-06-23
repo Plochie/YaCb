@@ -20,7 +20,8 @@
 			"app-src/*": ["./src/*"],
 			"app-components/*": ["./src/components/*"],
 			"app-wrapper/*": ["./src/wrapper/*"],
-			"app-config/*": ["./src/config/*"]
+			"app-config/*": ["./src/config/*"],
+			"app-store/*": ["./src/store/*"]
 		}
 	},
 	"include": ["src"],

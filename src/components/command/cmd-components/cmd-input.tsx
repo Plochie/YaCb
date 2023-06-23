@@ -3,31 +3,36 @@ import { Loader } from 'app-src/components/loader/Loader';
 import { useContext } from 'react';
 import { CgSearch } from 'react-icons/cg';
 import styles from './styles/CmdInput.module.scss';
+import { publishKeyChangeEvent } from 'app-src/events';
 
 export const Input = () => {
+	//
 	const commandContext = useContext(CommandContext);
-
+	//
 	return (
 		<div className={styles['input-container']}>
 			<div className={styles.input}>
 				<input
-					// value={value}
-					onChange={(e) => {
-						const str = e.target.value;
-						commandContext.onCommandChange(str);
-					}}
+					// onChange={(e) => {
+					// 	const str = e.target.value;
+					// 	commandContext.onCommandChange(str);
+					// }}
 					onKeyUp={(e) => {
-						commandContext.onInputKey(e);
+						e.preventDefault();
+						publishKeyChangeEvent({
+							currInput: (e.target as any).value as string,
+							keyEvent: e,
+						});
 					}}
 				></input>
 				<div className={styles['right-container']}>
-					{!commandContext.isActionLoading && (
+					{commandContext.isActionLoading ? (
+						<Loader isLoading={commandContext.isActionLoading} />
+					) : (
 						<CgSearch className={styles.icon} />
 					)}
-					<Loader isLoading={commandContext.isActionLoading} />
 				</div>
 			</div>
-			{/* {commandContext.isActionLoading && <div className={styles.border}></div>} */}
 		</div>
 	);
 };

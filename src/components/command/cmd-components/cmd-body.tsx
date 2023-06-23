@@ -5,7 +5,7 @@ import { Notify } from './cmd-notify';
 import { Page, PageProps } from './cmd-page';
 import { runOnlyOnce } from './index';
 import styles from './styles/CmdBody.module.scss';
-import { triggerWords } from 'app-src/actions';
+import Actions from 'app-src/actions';
 
 interface BodyProps {
 	children: React.ReactNode;
@@ -16,29 +16,6 @@ interface BodyProps {
 export const Body = (props: BodyProps) => {
 	//
 	const commandContext = useContext(CommandContext);
-	//
-	// TODO: check if below function execute only once
-	// this is the functions used to populate trigger words
-	if (runOnlyOnce.status) {
-		React.Children.toArray(props.children).forEach((c: any) => {
-			let page = c;
-			if (c.type && typeof c.type === 'function' && c.type({}).type === Page) {
-				page = c.type({});
-			}
-			const { id, trigger } = page.props as PageProps;
-			if (trigger) {
-				triggerWords[trigger.word] = {
-					pageId: id,
-					word: trigger.word,
-					action: trigger.action,
-				};
-			}
-			console.warn('should not run twice', { triggerWords });
-		});
-		runOnlyOnce.status = false;
-	}
-	//
-
 	//
 	const children =
 		React.Children.toArray(props.children)
