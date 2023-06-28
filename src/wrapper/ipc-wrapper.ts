@@ -10,7 +10,7 @@ type InvokeCommands =
 	| 'backend_logging'
 	// | 'get_indexed_files'
 	| 'run_cmd'
-	| 'open_resource'
+	| 'open_file'
 	| 'get_matched_files';
 
 /**

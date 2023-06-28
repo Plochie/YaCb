@@ -35,11 +35,20 @@ module.exports = {
 						message: 'Define wrapper function for using third party libraries',
 					},
 					{
-						group: ['../*'],
+						group: ['../..*'],
 						message:
 							'Relative paths are not allowed, convert to absolute paths',
 					},
 				],
+			},
+		],
+		'no-unused-vars': 'off',
+		'@typescript-eslint/no-unused-vars': [
+			'warn', // or "error"
+			{
+				argsIgnorePattern: '^_',
+				varsIgnorePattern: '^_',
+				caughtErrorsIgnorePattern: '^_',
 			},
 		],
 	},

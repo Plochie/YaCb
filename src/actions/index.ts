@@ -4,6 +4,7 @@ import { MathEvalAction } from './mathematics/MathAction';
 import { OpenResource } from './open_resource/OpenResource';
 import { ColorPickerAction } from './color_picker/ColorPicker';
 import { nanoid } from 'nanoid';
+import { SettingsActions } from './settings/SettingsActions';
 
 export type TriggerIgnoreResultType = {
 	caller: string;
@@ -41,16 +42,22 @@ export type TriggerWordAction = (
 export interface UserAction {
 	resultGroup: () => React.ReactNode;
 	word: string;
-	action: TriggerWordAction | undefined;
+	action: TriggerWordAction;
+	invokeActionOnModifier?: boolean;
+	priority?: number;
+}
+
+export interface ResultGroup {
+	(): JSX.Element;
+	_groupId: string;
 }
 
 export interface Action extends UserAction {
 	// NOTE: group id will be added by program at run time using nano id
-	groupId: string;
-	resultGroup: {
-		(): JSX.Element;
-		groupId: string;
-	};
+	_groupId: string;
+	resultGroup: ResultGroup;
+	// this will actually get used and not priority
+	_priority: number;
 }
 
 // export interface TriggerType {
@@ -68,13 +75,20 @@ const Actions: Action[] = [
 	MathEvalAction,
 	// RunTerminal,
 	ColorPickerAction,
-	// SettingsAction,
+	SettingsActions,
 ]
 	// assign unique id to each action
 	.map((action) => {
 		const a = action as Action;
-		a.groupId = nanoid();
-		a.resultGroup.groupId = a.groupId;
+		a._groupId = nanoid();
+		a.resultGroup._groupId = a._groupId;
+		if (a.invokeActionOnModifier === undefined) {
+			a.invokeActionOnModifier = false;
+		}
+		a._priority = -1;
+		if (a.priority !== undefined) {
+			a._priority = a.priority;
+		}
 		return a;
 	})
 	// sort actions by comparing trigger word

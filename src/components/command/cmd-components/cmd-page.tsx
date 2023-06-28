@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import { Group } from './cmd-group';
 import { Action } from 'app-src/actions';
-import { useKeyChangeEvent } from 'app-src/hooks';
+import { useInputKeyChangeEvent } from 'app-src/hooks';
 import { SidePanel } from './cmd-sidepanel';
 import styles from './styles/CmdPage.module.scss';
+import { Group } from './cmd-group';
+import { ItemContext } from '../context';
 
 export type PageType = React.ReactElement<
 	PageProps,
@@ -40,13 +42,36 @@ const checkComponentTypes = (e: any, m: any) => {
 export const Page = (props: PageProps) => {
 	//
 	//
-	const [itemIndex, setItemIndex] = useState(0);
-	//
-	useKeyChangeEvent((data) => {
-		if (data.detail.keyEvent.key === 'ArrowDown') {
-			setItemIndex((p) => p + 1);
-		}
-	});
+	// const [itemIndex, setItemIndex] = useState(0);
+	// //
+	// useInputKeyChangeEvent((data) => {
+	// 	const keyEvent = data.detail.keyEvent;
+	// 	//
+	// 	if (keyEvent.key === 'ArrowDown') {
+	// 		setItemIndex((c) => c + 1);
+	// 	}
+	// 	if (keyEvent.key === 'ArrowUp') {
+	// 		setItemIndex((c) => (c > 0 ? c - 1 : 0));
+	// 	}
+	// });
+	// //
+	// //
+	// useEffect(() => {
+	// 	const items = document.querySelectorAll('[data-yacb="item"]');
+
+	// 	items.forEach((item, index) => {
+	// 		item.setAttribute('data-yacb-item-index', '' + index);
+	// 		if (index === itemIndex) {
+	// 			item.classList.add('myclass');
+	// 			item.scrollIntoView({
+	// 				behavior: 'smooth',
+	// 				block: 'end',
+	// 			});
+	// 		} else {
+	// 			item.classList.remove('myclass');
+	// 		}
+	// 	});
+	// }, [itemIndex]);
 	//
 	//
 	// visible items
@@ -56,17 +81,23 @@ export const Page = (props: PageProps) => {
 		if (checkComponentTypes(child, SidePanel)) {
 			sidePanels.push(child);
 		} else {
+			checkComponentTypes(child, Group);
 			groups.push(child);
 		}
 	});
-	// console.log(groups);
+	// console.log(`☄️: ${}`, groups);
 	// render
 	return (
-		<div className={styles['page-container']}>
-			{/* <div style={{ padding: '10px' }}>{itemIndex}</div> */}
+		<div className={styles['page-container']} data-yacb="page">
 			<div className={styles['groups-container']}>
 				{/* {groups.map((g: any, i: number) => {
-					return <Group {...g.props} itemIndex={itemIndex} key={i} />;
+					return (
+						<Group {...g.props} itemIndex={itemIndex} key={i}>
+							{g.props.children}
+						</Group>
+					);
+					// console.log(g);
+					// return g;
 				})} */}
 				{groups}
 			</div>

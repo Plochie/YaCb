@@ -1,31 +1,31 @@
 @import '../../styles/root', '../../styles/dark';
 
-kbd {
-	display: inline-block;
-	border: 1px solid var(--gray7);
-	border-radius: 4px;
-	padding: 0.1em 0.5em;
-	margin: 0 0.2em;
-	background-color: transparent;
-	font-size: 0.7em;
-}
+// kbd {
+// 	display: inline-block;
+// 	border: 1px solid var(--gray7);
+// 	border-radius: 4px;
+// 	padding: 0.1em 0.5em;
+// 	margin: 0 0.2em;
+// 	background-color: transparent;
+// 	font-size: 0.7em;
+// }
 .command-bar-container {
 	// variables
-	--cmd-input-font-size: 21px;
-	--cmd-group-title-size: 14px;
+	--cmd-input-font-size: 1.5rem;
+	--cmd-group-title-size: 0.9rem;
 	--cmd-group-item-size: 17px;
 	--cmd-max-height: 400px;
 	--cmd-min-width: 700px;
 
 	--user-input-icon-size: 1.75em;
-	--item-icon-size: 1.6em;
+	--item-icon-size: 1.7rem;
 
 	min-width: var(--cmd-min-width);
 	// max-height: var(--cmd-max-height);
 	max-height: var(--cmd-max-height);
 	display: flex;
 	margin-top: 25px;
-	flex: 0.6;
+	flex: 1;
 	flex-direction: column;
 	font-family: var(--font-sans);
 	box-shadow: var(--cmdk-shadow);

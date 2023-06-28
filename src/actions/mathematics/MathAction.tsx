@@ -18,7 +18,6 @@ const mathEvalAction: TriggerWordAction = ({ query }) => {
 			const ans = mexp.eval(query, [], {});
 			resolve({
 				success: {
-					groupTitle: 'Answer',
 					items: [{ title: 'calculate', data: ans.toString() }],
 				},
 			});
@@ -35,7 +34,7 @@ const RenderGroup = () => {
 	const triggerResult = useTriggerResult(RenderGroup);
 
 	return (
-		<Command.Group title={triggerResult?.groupTitle}>
+		<Command.Group title="Answer">
 			{triggerResult?.items.map((item, index) => {
 				return (
 					<Command.Item
@@ -67,4 +66,5 @@ export const MathEvalAction: UserAction = {
 	word: '',
 	action: mathEvalAction,
 	resultGroup: RenderGroup,
+	priority: 1,
 };

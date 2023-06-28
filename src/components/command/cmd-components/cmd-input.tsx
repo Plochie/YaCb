@@ -13,16 +13,21 @@ export const Input = () => {
 		<div className={styles['input-container']}>
 			<div className={styles.input}>
 				<input
-					// onChange={(e) => {
-					// 	const str = e.target.value;
-					// 	commandContext.onCommandChange(str);
-					// }}
+					autoFocus
 					onKeyUp={(e) => {
-						e.preventDefault();
+						// e.preventDefault();
+						e.stopPropagation();
 						publishKeyChangeEvent({
 							currInput: (e.target as any).value as string,
 							keyEvent: e,
 						});
+					}}
+					onKeyDown={(e) => {
+						// ignore events for arrow up and down as these will be used in
+						// global document key event handler hook
+						if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+							e.preventDefault();
+						}
 					}}
 				></input>
 				<div className={styles['right-container']}>

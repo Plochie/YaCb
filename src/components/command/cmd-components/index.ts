@@ -12,7 +12,7 @@ import { Empty } from './cmd-empty';
 import { Footer } from './cmd-footer';
 import { Group } from './cmd-group';
 import { Input } from './cmd-input';
-import { Item } from './cmd-item';
+import { Item, GenericItem } from './cmd-item';
 import { Notify } from './cmd-notify';
 import { Page } from './cmd-page';
 import { Wrapper } from './cmd-wrapper';
@@ -23,6 +23,7 @@ export const runOnlyOnce = { status: true };
 const Command = {
 	Page,
 	Group,
+	GenericItem,
 	Item,
 	Input,
 	Body,

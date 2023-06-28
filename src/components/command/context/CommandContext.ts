@@ -12,7 +12,7 @@ export interface CommandContextType {
 	//
 	// triggerResult?: TriggerSuccessResultType;
 	//
-	matchedActions?: Set<Action>;
+	matchedActions?: Action[];
 	//
 	triggerResults?: Map<string, TriggerSuccessResultType>;
 }
@@ -22,4 +22,11 @@ export const CommandContext = createContext<CommandContextType>({
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	setIsActionLoading: () => {},
 	currentPage: 'home',
+});
+//
+//
+//
+
+export const ItemContext = createContext<{ index: number }>({
+	index: 0,
 });

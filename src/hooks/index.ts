@@ -1,2 +1,2 @@
-export * from './useKeyChangeEvent';
+export * from './useInputKeyChangeEvent';
 export * from './useTriggerResult';

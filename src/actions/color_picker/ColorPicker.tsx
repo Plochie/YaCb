@@ -8,7 +8,6 @@ import { generateAnalogousShades, generateShades } from './utils';
 
 const colorPickerAction: TriggerWordAction = () => {
 	return new Promise((resolve) => {
-		// resolve({ success: { renderResultItem: RenderResultItem } });
 		resolve({
 			success: {
 				items: [{ title: 'color' }],

@@ -22,7 +22,6 @@ const openResourceAction: TriggerWordAction = ({
 				// IMPROVEMENT: should use get_matched_files ?
 				'get_matched_files',
 				{
-					// fetchLatest: false,
 					query: `${query}`,
 				}
 			);
@@ -55,6 +54,11 @@ const RenderGroup = () => {
 	//
 	return (
 		<Command.Group title="Open Resource">
+			<Command.GenericItem onClick={() => {}}>
+				<span style={{ fontSize: '0.75em' }}>
+					Not finding what you&apos;ve looking for, Refresh index{' '}
+				</span>
+			</Command.GenericItem>
 			{triggerResult?.items.map((item, index) => {
 				return (
 					<Command.Item
@@ -62,7 +66,7 @@ const RenderGroup = () => {
 						title={item.data.path}
 						icon={item.data.t === 'd' ? <FcOpenedFolder /> : <FcFile />}
 						onClick={() => {
-							console.log('Clicked from use defined item item');
+							invoke('open_file', { resource: item.data.path });
 							return 0;
 						}}
 					></Command.Item>
@@ -75,5 +79,5 @@ const RenderGroup = () => {
 export const OpenResource: UserAction = {
 	resultGroup: RenderGroup,
 	action: openResourceAction,
-	word: 'o ',
+	word: 'o |',
 };

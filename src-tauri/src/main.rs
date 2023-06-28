@@ -35,12 +35,6 @@ fn init_app() {
     file_search_new::init_index_reader().unwrap();
 }
 
-/**
- * TODO:  main
- * FIXME:  main
- * IMPROVEMENT: improvement
- */
-
 fn main() {
     //
     let now = Instant::now();

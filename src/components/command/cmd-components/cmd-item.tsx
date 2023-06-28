@@ -1,10 +1,14 @@
-import { TriggerWordAction } from 'app-src/actions';
 import React from 'react';
 import styles from './styles/CmdItem.module.scss';
 
 export type ItemType = React.ReactElement<
 	ItemProps,
 	React.JSXElementConstructor<React.Component<typeof Item>>
+>;
+
+export type GenericItemType = React.ReactElement<
+	GenericItemProps,
+	React.JSXElementConstructor<React.Component<typeof GenericItem>>
 >;
 
 export interface ItemProps {
@@ -16,7 +20,7 @@ export interface ItemProps {
 	icon?: React.ReactElement;
 	children?: React.ReactNode;
 	shortcut?: string[];
-	onClick?: () => number;
+	onClick?: () => number | void;
 	onHover?: () => void;
 	containerStyles?: React.CSSProperties;
 }
@@ -29,6 +33,7 @@ export const Item = (props: ItemProps) => {
 			onClick={props.onClick}
 			style={props.containerStyles}
 			onMouseEnter={props.onHover}
+			data-yacb="item"
 		>
 			{props.icon && <div className={styles.icon}>{props.icon}</div>}
 			<div className={styles['item-children']}>
@@ -43,4 +48,13 @@ export const Item = (props: ItemProps) => {
 			)}
 		</div>
 	);
+};
+
+interface GenericItemProps {
+	children?: React.ReactNode;
+	onClick?: () => void;
+}
+
+export const GenericItem = ({ children }: GenericItemProps) => {
+	return <div className={styles.item}>{children}</div>;
 };
