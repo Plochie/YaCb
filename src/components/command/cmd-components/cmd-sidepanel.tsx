@@ -17,5 +17,9 @@ interface SidePanelProps {
  */
 export const SidePanel = (props: SidePanelProps) => {
 	// render
-	return <div style={{ textAlign: 'center' }}>{props.children}</div>;
+	return (
+		<div style={{ textAlign: 'center', border: '1px solid green' }}>
+			{props.children}
+		</div>
+	);
 };

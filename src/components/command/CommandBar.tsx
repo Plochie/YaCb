@@ -1,14 +1,26 @@
 import { CommandContext } from 'app-components/command/context';
 import Actions, { Action, TriggerSuccessResultType } from 'app-src/actions';
-import { clearLastPublishedKeyChangeEvent } from 'app-src/events';
 import { useInputKeyChangeEvent } from 'app-src/hooks';
-import { useState, useRef, useEffect } from 'react';
-import './CommandBar.scss';
+import { useEffect, useState } from 'react';
+// import './CommandBar.scss';
+import { baseTheme } from 'app-src/theme/theme.css';
+import { FcFlashOn } from 'react-icons/fc';
 import { TriggerResultGroup } from './TriggerResultPage/TriggerResultPage';
 import Command from './cmd-components';
-import { useDocumentKeyEvent } from 'app-src/hooks/useDocumentKeyEvent';
-import { FcFlashOn } from 'react-icons/fc';
-// import Command from 'yacb-lib';
+import itemStyles from './cmd-components/styles/CmdItem.css';
+import { clearLastPublishedKeyChangeEvent } from 'app-src/events';
+//
+// TODO: add Partial typescript
+//
+const HomeSidePane = () => {
+	return (
+		<Command.SidePanel>
+			<span style={{ fontWeight: 'bold', color: 'white' }}>
+				This is test of side panel
+			</span>
+		</Command.SidePanel>
+	);
+};
 //
 export const CommandBar = () => {
 	//
@@ -19,40 +31,9 @@ export const CommandBar = () => {
 		Map<string, TriggerSuccessResultType>
 	>(new Map());
 	//
-	//
-	const store = useRef({ itemIndex: 0 }).current;
-	useDocumentKeyEvent(({ event }) => {
-		const items = document.querySelectorAll(
-			'[data-yacb="item"]'
-		) as NodeListOf<HTMLDivElement>;
-		if (event === 'KEY_DOWN') {
-			store.itemIndex =
-				store.itemIndex < items.length - 1 ? store.itemIndex + 1 : 0;
-		} //
-		else if (event === 'KEY_UP') {
-			store.itemIndex =
-				store.itemIndex > 0 ? store.itemIndex - 1 : items.length - 1;
-		} //
-		else if (event === 'ENTER') {
-			items[store.itemIndex].click();
-		}
-		items.forEach((item, index) => {
-			item.setAttribute('data-yacb-item-index', '' + index);
-			if (index === store.itemIndex) {
-				item.classList.add('myclass');
-				item.scrollIntoView({
-					behavior: 'auto',
-					block: 'nearest',
-				});
-			} else {
-				item.classList.remove('myclass');
-			}
-		});
-	});
-
 	useEffect(() => {
 		const item = document.querySelector('[data-yacb="item"]');
-		item?.classList.add('myclass');
+		item?.classList.add(itemStyles.itemHover);
 	}, [currentPage]);
 	//
 	useInputKeyChangeEvent(({ detail }) => {
@@ -102,7 +83,8 @@ export const CommandBar = () => {
 						// if result received show "triggerResult" page but use
 						if (result.success) {
 							// on new result reset the itemIndex to 0
-							store.itemIndex = 0;
+							// FIXME: reset item hover index to 0
+							// store.itemIndex = 0;
 							setCurrentPage('resultPage');
 							setTriggerResults((p) => {
 								p.set(
@@ -152,7 +134,7 @@ export const CommandBar = () => {
 	const setIsActionLoading = (isLoad: boolean) => {
 		setActionLoading(isLoad);
 	};
-
+	//
 	const resetHome = () => {
 		setCurrentPage('home');
 		setMatchedActions([]);
@@ -161,13 +143,12 @@ export const CommandBar = () => {
 	};
 	//
 	return (
-		<Command.Wrapper>
+		<Command.Wrapper theme={baseTheme}>
 			<CommandContext.Provider
 				value={{
 					isActionLoading: actionLoading,
 					setIsActionLoading,
 					currentPage,
-					// triggerResult,
 					matchedActions,
 					triggerResults,
 				}}
@@ -176,7 +157,6 @@ export const CommandBar = () => {
 				<Command.Body>
 					{/* no results page */}
 					{/* TODO: how to use Empty, Notify components here? */}
-					<Command.Empty />
 					{/* TODO: should home be used here, or it should be action? */}
 					<Command.Page id="home" key="home">
 						<Command.Group title="Commands">
@@ -185,8 +165,16 @@ export const CommandBar = () => {
 									onClick={() => console.log(`logged ${action._groupId}`)}
 									key={actionIdx}
 									icon={<FcFlashOn />}
-									title={`${action._priority} ${action._groupId}      ⌨️ '${action.word}'`}
+									title={`${action._priority} ${action._groupId}`}
 									alwaysVisible
+									shortcut={action.word.split('|').map((s) => s.split(''))}
+									sidePanel={
+										<Command.SidePanel>
+											<span style={{ fontWeight: 'bold', color: 'white' }}>
+												This is test of side panel
+											</span>
+										</Command.SidePanel>
+									}
 								/>
 							))}
 						</Command.Group>
@@ -194,13 +182,6 @@ export const CommandBar = () => {
 					<Command.Page id="resultPage" key="resultPage">
 						<TriggerResultGroup />
 					</Command.Page>
-					{/* {Actions.map((action, actionId) => {
-						if (action.resultPage) {
-							return <action.resultPage key={actionId} />;
-						} else {
-							return <div key={actionId}></div>;
-						}
-					})} */}
 				</Command.Body>
 			</CommandContext.Provider>
 		</Command.Wrapper>

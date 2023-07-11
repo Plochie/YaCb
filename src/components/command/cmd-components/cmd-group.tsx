@@ -1,10 +1,9 @@
 import { CommandContext } from 'app-components/command/context';
 import { Action } from 'app-src/actions';
-import { lastPublishedKeyChangeEvent } from 'app-src/events';
-import { UseKeyChangeEventDetail, useInputKeyChangeEvent } from 'app-src/hooks';
-import React, { ReactNode, useContext, useState } from 'react';
-import { GenericItem, GenericItemType, ItemType } from './cmd-item';
-import styles from './styles/CmdGroup.module.scss';
+import { UseKeyChangeEventDetail } from 'app-src/hooks';
+import React, { ReactNode, useContext, useRef, useState } from 'react';
+import { GenericItem, ItemType } from './cmd-item';
+import styles from './styles/CmdGroup.css';
 
 export type GroupType = React.ReactElement<
 	GroupProps,
@@ -28,6 +27,7 @@ const visibleItems = (
 		const query = inputString.substring(actions.word.length);
 		const matched = items.filter((i) => {
 			// searching in title of Item
+
 			if (i.props?.title?.toLowerCase().includes(query)) {
 				return true;
 			} //
@@ -73,9 +73,11 @@ export const Group = (props: GroupProps) => {
 	const commandContext = useContext(CommandContext);
 	const [keyChangeData, setKeyChangeData] = useState<UseKeyChangeEventDetail>();
 	//
-	useInputKeyChangeEvent((data) => {
-		setKeyChangeData(data.detail);
-	});
+	const store = useRef({ subscribed: false });
+	//
+	// useInputKeyChangeEvent((data) => {
+	// 	setKeyChangeData(data.detail);
+	// });
 	//
 	/**
 	 * IMPROVEMENT: is there a better way to handle?
@@ -91,20 +93,21 @@ export const Group = (props: GroupProps) => {
 			React.Children.toArray(props.children ?? [])
 		);
 	} //
-	else {
-		const ev = lastPublishedKeyChangeEvent();
-		if (ev) {
-			visibleChildren = visibleItems(
-				ev.currInput,
-				commandContext.matchedActions,
-				React.Children.toArray(props.children ?? [])
-			);
-		}
-	}
+	// else {
+	// TODO: is last published event required?
+	// 	const ev = lastPublishedKeyChangeEvent();
+	// 	if (ev) {
+	// 		visibleChildren = visibleItems(
+	// 			ev.currInput,
+	// 			commandContext.matchedActions,
+	// 			React.Children.toArray(props.children ?? [])
+	// 		);
+	// 	}
+	// }
 	//
 	//
 	return visibleChildren.length > 0 ? (
-		<div className={styles['group-container']} data-yacb="group">
+		<div className={styles.groupContainer} data-yacb="group">
 			{props.title && props.title.trim() !== '' && (
 				<div className={styles.title}>
 					<span>{props.title}</span>

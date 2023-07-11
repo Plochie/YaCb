@@ -54,7 +54,7 @@ const RenderGroup = () => {
 	//
 	return (
 		<Command.Group title="Open Resource">
-			<Command.GenericItem onClick={() => {}}>
+			<Command.GenericItem>
 				<span style={{ fontSize: '0.75em' }}>
 					Not finding what you&apos;ve looking for, Refresh index{' '}
 				</span>

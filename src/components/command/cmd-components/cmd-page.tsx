@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 // import { Group } from './cmd-group';
 import { Action } from 'app-src/actions';
-import { useInputKeyChangeEvent } from 'app-src/hooks';
-import { SidePanel } from './cmd-sidepanel';
-import styles from './styles/CmdPage.module.scss';
 import { Group } from './cmd-group';
-import { ItemContext } from '../context';
+import { SidePanel } from './cmd-sidepanel';
+import styles from './styles/CmdPage.css';
+import itemStyles from './styles/CmdItem.css';
+import { useDocumentKeyEvent } from 'app-src/hooks/useDocumentKeyEvent';
 
 export type PageType = React.ReactElement<
 	PageProps,
@@ -42,37 +42,44 @@ const checkComponentTypes = (e: any, m: any) => {
 export const Page = (props: PageProps) => {
 	//
 	//
-	// const [itemIndex, setItemIndex] = useState(0);
-	// //
-	// useInputKeyChangeEvent((data) => {
-	// 	const keyEvent = data.detail.keyEvent;
-	// 	//
-	// 	if (keyEvent.key === 'ArrowDown') {
-	// 		setItemIndex((c) => c + 1);
-	// 	}
-	// 	if (keyEvent.key === 'ArrowUp') {
-	// 		setItemIndex((c) => (c > 0 ? c - 1 : 0));
-	// 	}
-	// });
-	// //
-	// //
-	// useEffect(() => {
-	// 	const items = document.querySelectorAll('[data-yacb="item"]');
-
-	// 	items.forEach((item, index) => {
-	// 		item.setAttribute('data-yacb-item-index', '' + index);
-	// 		if (index === itemIndex) {
-	// 			item.classList.add('myclass');
-	// 			item.scrollIntoView({
-	// 				behavior: 'smooth',
-	// 				block: 'end',
-	// 			});
-	// 		} else {
-	// 			item.classList.remove('myclass');
-	// 		}
-	// 	});
-	// }, [itemIndex]);
+	// item index will store current selected item
+	const store = React.useRef({ itemIndex: 0 }).current;
 	//
+	useDocumentKeyEvent(({ event }) => {
+		const items = document.querySelectorAll(
+			'[data-yacb="item"]'
+		) as NodeListOf<HTMLDivElement>;
+		const page = document.querySelector('[data-yacb="page"]') as HTMLDivElement;
+		if (event === 'KEY_DOWN') {
+			store.itemIndex =
+				store.itemIndex < items.length - 1 ? store.itemIndex + 1 : 0;
+		} //
+		else if (event === 'KEY_UP') {
+			store.itemIndex =
+				store.itemIndex > 0 ? store.itemIndex - 1 : items.length - 1;
+		} //
+		else if (event === 'ENTER') {
+			items[store.itemIndex].click();
+		}
+		items.forEach((item, index) => {
+			item.setAttribute('data-yacb-item-index', '' + index);
+			if (index === store.itemIndex) {
+				item.classList.add(itemStyles.itemHover);
+				if (store.itemIndex === 0) {
+					page.scrollTop = 0;
+				} else {
+					item.scrollIntoView({
+						behavior: 'auto',
+						block: 'nearest',
+					});
+				}
+				item.setAttribute('data-yacb-item-active', 'true');
+			} else {
+				item.classList.remove(itemStyles.itemHover);
+				item.setAttribute('data-yacb-item-active', 'false');
+			}
+		});
+	});
 	//
 	// visible items
 	const groups: any[] = [];
@@ -85,24 +92,12 @@ export const Page = (props: PageProps) => {
 			groups.push(child);
 		}
 	});
-	// console.log(`☄️: ${}`, groups);
 	// render
 	return (
-		<div className={styles['page-container']} data-yacb="page">
-			<div className={styles['groups-container']}>
-				{/* {groups.map((g: any, i: number) => {
-					return (
-						<Group {...g.props} itemIndex={itemIndex} key={i}>
-							{g.props.children}
-						</Group>
-					);
-					// console.log(g);
-					// return g;
-				})} */}
-				{groups}
-			</div>
+		<div className={styles.pageContainer} data-yacb="page">
+			<div className={styles.groupsContainer}>{groups}</div>
 			{sidePanels && sidePanels.length > 0 && (
-				<div className={styles['panel-container']}>{sidePanels}</div>
+				<div className={styles.pageContainer}>{sidePanels}</div>
 			)}
 		</div>
 	);

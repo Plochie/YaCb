@@ -1,18 +1,19 @@
 import { CommandContext } from 'app-components/command/context';
 import { Loader } from 'app-src/components/loader/Loader';
+import { publishKeyChangeEvent } from 'app-src/events';
 import { useContext } from 'react';
 import { CgSearch } from 'react-icons/cg';
-import styles from './styles/CmdInput.module.scss';
-import { publishKeyChangeEvent } from 'app-src/events';
+import styles from './styles/CmdInput.css';
 
 export const Input = () => {
 	//
 	const commandContext = useContext(CommandContext);
 	//
 	return (
-		<div className={styles['input-container']}>
+		<div className={styles.inputContainer}>
 			<div className={styles.input}>
 				<input
+					className={styles.input}
 					autoFocus
 					onKeyUp={(e) => {
 						// e.preventDefault();
@@ -30,7 +31,7 @@ export const Input = () => {
 						}
 					}}
 				></input>
-				<div className={styles['right-container']}>
+				<div className={styles.rightContainer}>
 					{commandContext.isActionLoading ? (
 						<Loader isLoading={commandContext.isActionLoading} />
 					) : (

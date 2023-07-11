@@ -1,5 +1,4 @@
 export * from './cmd-body';
-export * from './cmd-empty';
 export * from './cmd-footer';
 export * from './cmd-group';
 export * from './cmd-input';
@@ -8,7 +7,6 @@ export * from './cmd-page';
 export * from './cmd-wrapper';
 
 import { Body } from './cmd-body';
-import { Empty } from './cmd-empty';
 import { Footer } from './cmd-footer';
 import { Group } from './cmd-group';
 import { Input } from './cmd-input';
@@ -27,7 +25,6 @@ const Command = {
 	Item,
 	Input,
 	Body,
-	Empty,
 	Footer,
 	Wrapper,
 	Notify,

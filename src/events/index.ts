@@ -36,15 +36,15 @@ export const publishKeyChangeEvent = (data: UseKeyChangeEventDetail) => {
 	publish('__APP__INPUT_KEY_CHANGE', data);
 };
 
-export const lastPublishedKeyChangeEvent = ():
-	| UseKeyChangeEventDetail
-	| undefined => {
-	console.debug(
-		'🪢 lastPublishedKeyChangeEvent called',
-		prevPublishKeyChangeEvent
-	);
-	return prevPublishKeyChangeEvent;
-};
+// export const lastPublishedKeyChangeEvent = ():
+// 	| UseKeyChangeEventDetail
+// 	| undefined => {
+// 	console.debug(
+// 		'🪢 lastPublishedKeyChangeEvent called',
+// 		prevPublishKeyChangeEvent
+// 	);
+// 	// return prevPublishKeyChangeEvent;
+// };
 
 export const clearLastPublishedKeyChangeEvent = () => {
 	console.debug('🧹 lastPublishedKeyChangeEvent cleared');

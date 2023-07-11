@@ -1,6 +1,6 @@
 import { CgClose } from 'react-icons/cg';
 import { FcAdvertising, FcCancel, FcCheckmark } from 'react-icons/fc';
-import styles from './styles/CmdNotify.module.scss';
+import styles from './styles/CmdNotify.css';
 
 type IconTypes = 'success' | 'error' | 'output' | undefined;
 
@@ -27,7 +27,7 @@ export const Notify = (props: NotifyProps) => {
 
 	//
 	return props.visible ? (
-		<div className={styles['notify-container']} style={{ borderLeft: border }}>
+		<div className={styles.notifyContainer} style={{ borderLeft: border }}>
 			<div className={styles.icon}>{icon}</div>
 			<div style={{ flexDirection: 'column' }}>
 				{props.title && <div className={styles.title}>{props.title}</div>}

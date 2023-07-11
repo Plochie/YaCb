@@ -13,19 +13,16 @@ interface UseKeyChangeEventData extends Event {
 //
 export function useInputKeyChangeEvent(
 	callback: (data: UseKeyChangeEventData) => void,
-	deps?: React.DependencyList | undefined
+	subscribed?: boolean
 ) {
 	//
 	//
-	useEffect(
-		() => {
-			// FIXME: check if subscribe happening only once
-			subscribe('__APP__INPUT_KEY_CHANGE', callback as any);
+	useEffect(() => {
+		// FIXME: check if subscribe happening only once
+		subscribe('__APP__INPUT_KEY_CHANGE', callback as any);
 
-			return () => {
-				unsubscribe('__APP__INPUT_KEY_CHANGE', callback as any);
-			};
-		},
-		deps ? deps : []
-	);
+		return () => {
+			unsubscribe('__APP__INPUT_KEY_CHANGE', callback as any);
+		};
+	}, []);
 }

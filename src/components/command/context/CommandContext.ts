@@ -1,5 +1,5 @@
-import { TriggerSuccessResultType, Action } from 'app-src/actions';
-import { createContext } from 'react';
+import { Action, TriggerSuccessResultType } from 'app-src/actions';
+import React, { createContext } from 'react';
 
 // TODO: add comments on each property to specify what it does
 export interface CommandContextType {
@@ -15,6 +15,9 @@ export interface CommandContextType {
 	matchedActions?: Action[];
 	//
 	triggerResults?: Map<string, TriggerSuccessResultType>;
+	//
+	sidePanel?: React.ReactElement;
+	setSidePanel?: any;
 }
 
 export const CommandContext = createContext<CommandContextType>({

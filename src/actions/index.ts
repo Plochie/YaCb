@@ -59,16 +59,6 @@ export interface Action extends UserAction {
 	// this will actually get used and not priority
 	_priority: number;
 }
-
-// export interface TriggerType {
-// 	word: string;
-// 	action: TriggerWordAction | undefined;
-// 	pageId: string;
-// }
-
-//
-// type TriggerWords = { [key: string]: TriggerType };
-// export const triggerWords: TriggerType[] = [];
 //
 const Actions: Action[] = [
 	OpenResource,
