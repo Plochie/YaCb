@@ -1,7 +1,7 @@
 import { CommandContext } from 'app-components/command/context';
 import { Action } from 'app-src/actions';
 import { UseKeyChangeEventDetail } from 'app-src/hooks';
-import React, { ReactNode, useContext, useRef, useState } from 'react';
+import React, { ReactNode, useContext, useState } from 'react';
 import { GenericItem, ItemType } from './cmd-item';
 import styles from './styles/CmdGroup.css';
 
@@ -73,19 +73,13 @@ export const Group = (props: GroupProps) => {
 	const commandContext = useContext(CommandContext);
 	const [keyChangeData, setKeyChangeData] = useState<UseKeyChangeEventDetail>();
 	//
-	const store = useRef({ subscribed: false });
-	//
-	// useInputKeyChangeEvent((data) => {
-	// 	setKeyChangeData(data.detail);
-	// });
-	//
 	/**
 	 * IMPROVEMENT: is there a better way to handle?
 	 */
 	let visibleChildren: React.ReactNode[] = React.Children.toArray(
 		props.children
 	);
-
+	//
 	if (keyChangeData) {
 		visibleChildren = visibleItems(
 			keyChangeData?.currInput,

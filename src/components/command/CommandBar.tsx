@@ -2,7 +2,6 @@ import { CommandContext } from 'app-components/command/context';
 import Actions, { Action, TriggerSuccessResultType } from 'app-src/actions';
 import { useInputKeyChangeEvent } from 'app-src/hooks';
 import { useEffect, useState } from 'react';
-// import './CommandBar.scss';
 import { baseTheme } from 'app-src/theme/theme.css';
 import { FcFlashOn } from 'react-icons/fc';
 import { TriggerResultGroup } from './TriggerResultPage/TriggerResultPage';
@@ -30,11 +29,6 @@ export const CommandBar = () => {
 	const [triggerResults, setTriggerResults] = useState<
 		Map<string, TriggerSuccessResultType>
 	>(new Map());
-	//
-	useEffect(() => {
-		const item = document.querySelector('[data-yacb="item"]');
-		item?.classList.add(itemStyles.itemHover);
-	}, [currentPage]);
 	//
 	useInputKeyChangeEvent(({ detail }) => {
 		const keyEvent = detail.keyEvent;
@@ -168,13 +162,6 @@ export const CommandBar = () => {
 									title={`${action._priority} ${action._groupId}`}
 									alwaysVisible
 									shortcut={action.word.split('|').map((s) => s.split(''))}
-									sidePanel={
-										<Command.SidePanel>
-											<span style={{ fontWeight: 'bold', color: 'white' }}>
-												This is test of side panel
-											</span>
-										</Command.SidePanel>
-									}
 								/>
 							))}
 						</Command.Group>

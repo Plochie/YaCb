@@ -1,7 +1,7 @@
 import Command from 'app-components/command/cmd-components';
 import { useTriggerResult } from 'app-src/hooks';
 import { invoke } from 'app-src/wrapper/ipc-wrapper';
-import { FcFile, FcOpenedFolder } from 'react-icons/fc';
+import { FcDownRight, FcFile, FcOpenedFolder } from 'react-icons/fc';
 import { TriggerWordAction, UserAction } from '..';
 
 /**
@@ -69,7 +69,30 @@ const RenderGroup = () => {
 							invoke('open_file', { resource: item.data.path });
 							return 0;
 						}}
-					></Command.Item>
+						sidePanel={
+							<Command.SidePanel>
+								{/* <span style={{ fontWeight: 'bold', color: 'white' }}>
+									side panel: {item.data.path}
+								</span> */}
+								<Command.Item
+									title={'Open'}
+									icon={<FcDownRight />}
+									onClick={() => {
+										invoke('open_file', { resource: item.data.path });
+										return 0;
+									}}
+								/>
+								<Command.Item
+									title={'Open containing folder'}
+									icon={<FcDownRight />}
+									onClick={() => {
+										invoke('open_file', { resource: item.data.path });
+										return 0;
+									}}
+								/>
+							</Command.SidePanel>
+						}
+					/>
 				);
 			})}
 		</Command.Group>

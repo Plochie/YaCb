@@ -13,27 +13,6 @@ export const Body = (props: BodyProps) => {
 	//
 	const commandContext = useContext(CommandContext);
 	//
-	// item index will store current selected item
-	// const store = React.useRef({ itemIndex: 0 }).current;
-	//
-	// useEffect(() => {
-	// 	const items = document.querySelectorAll(
-	// 		'[data-yacb="item"]'
-	// 	) as NodeListOf<HTMLDivElement>;
-	// 	items.forEach((item, index) => {
-	// 		item.setAttribute('data-yacb-item-index', '' + index);
-	// 		// active element
-	// 		if (index === store.itemIndex) {
-	// 			item.classList.add(itemStyles.itemHover);
-	// 			item.setAttribute('data-yacb-item-active', 'true');
-	// 		} //
-	// 		else {
-	// 			item.classList.remove(itemStyles.itemHover);
-	// 			item.setAttribute('data-yacb-item-active', 'false');
-	// 		}
-	// 	});
-	// }, []);
-	//
 	const children =
 		React.Children.toArray(props.children)
 			// for page component defined in nested user component
@@ -50,7 +29,6 @@ export const Body = (props: BodyProps) => {
 	return children.length > 0 ? (
 		<div className={styles.bodyContainer}>
 			<div className={styles.items}>{children}</div>
-			<div className={styles.sidePanel}></div>
 		</div>
 	) : (
 		<></>

@@ -1,13 +1,14 @@
 import React from 'react';
+import { ItemType } from './cmd-item';
 // import { Group } from './cmd-group';
-// import styles from './styles/CmdPage.module.scss';
+import styles from './styles/CmdSidePanel.css';
 
 export type PageType = React.ReactElement<
 	SidePanelProps,
 	React.JSXElementConstructor<React.Component<typeof SidePanel>>
 >;
 interface SidePanelProps {
-	children?: React.ReactNode;
+	children?: ItemType[];
 }
 
 /**
@@ -17,9 +18,5 @@ interface SidePanelProps {
  */
 export const SidePanel = (props: SidePanelProps) => {
 	// render
-	return (
-		<div style={{ textAlign: 'center', border: '1px solid green' }}>
-			{props.children}
-		</div>
-	);
+	return <div className={styles.sidePanel}>{props.children}</div>;
 };

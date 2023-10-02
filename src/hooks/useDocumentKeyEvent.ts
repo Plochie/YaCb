@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-type DocumentKeyEvent = 'KEY_UP' | 'KEY_DOWN' | 'ENTER' | undefined;
+export type DocumentKeyEvent = 'KEY_UP' | 'KEY_DOWN' | 'ENTER' | undefined;
 //
 //
 export function useDocumentKeyEvent(

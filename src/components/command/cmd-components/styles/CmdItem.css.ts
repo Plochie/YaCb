@@ -8,14 +8,19 @@ const ItemHoverCss: ComplexStyleRule = {
 	color: vars.components.item.hoverFontColor,
 };
 
+const itemContainer = style({
+	display: 'flex',
+	flexDirection: 'row',
+});
+
 const item = style({
 	padding: calc.subtract(vars.spacing, '2px'),
 	margin: '5px 0 0 0',
-	display: 'flex',
-	flexDirection: 'row',
 	alignItems: 'center',
 	borderRadius: calc.subtract(vars.components.container.borderRadius, '0.1rem'),
 	':hover': ItemHoverCss,
+	flex: 1,
+	display: 'flex',
 });
 
 const itemHover = style(ItemHoverCss);
@@ -39,6 +44,7 @@ const shortcut = style({
 });
 
 export default {
+	itemContainer,
 	item,
 	itemHover,
 	itemChildren,

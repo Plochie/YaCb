@@ -31,7 +31,7 @@ const RenderGroup = () => {
 					return 0;
 				}}
 			>
-				Tets
+				Test Setting
 			</Command.Item>
 		</Command.Group>
 	);

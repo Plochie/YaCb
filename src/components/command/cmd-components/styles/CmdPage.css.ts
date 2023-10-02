@@ -9,7 +9,6 @@ export const pageContainer = style({
 	position: 'relative',
 	width: '100%',
 	display: 'flex',
-	overflow: 'auto',
 });
 
 export const panelContainer = style({
@@ -19,8 +18,6 @@ export const panelContainer = style({
 	//   position: "-webkit-sticky",
 	position: 'sticky',
 	top: '0',
-	alignSelf: 'flex-start',
-	overflowX: 'hidden',
 	borderLeft: '3px solid #2e2d2d',
 	padding: '0.7em',
 	textAlign: 'center',
