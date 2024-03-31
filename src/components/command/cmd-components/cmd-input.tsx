@@ -2,7 +2,9 @@ import { CommandContext } from 'app-components/command/context';
 import { Loader } from 'app-src/components/loader/Loader';
 import { publishKeyChangeEvent } from 'app-src/events';
 import { useContext } from 'react';
-import { CgSearch } from 'react-icons/cg';
+import { PiDotsSixVerticalBold } from 'react-icons/pi';
+import { LuSearch } from 'react-icons/lu';
+
 import styles from './styles/CmdInput.css';
 
 export const Input = () => {
@@ -35,8 +37,14 @@ export const Input = () => {
 					{commandContext.isActionLoading ? (
 						<Loader isLoading={commandContext.isActionLoading} />
 					) : (
-						<CgSearch className={styles.icon} />
+						<LuSearch className={styles.icon} />
 					)}
+					{/* drag region */}
+					<PiDotsSixVerticalBold
+						className={styles.icon}
+						style={{ cursor: 'move' }}
+						data-tauri-drag-region
+					/>
 				</div>
 			</div>
 		</div>

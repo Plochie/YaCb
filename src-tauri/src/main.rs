@@ -6,7 +6,7 @@
 extern crate log;
 mod commands;
 mod helper;
-use crate::commands::{file_search, file_search_new};
+use commands::file_search_new;
 use std::time::Instant;
 use tauri::*;
 
@@ -29,10 +29,9 @@ fn init_app() {
     // crate::commands::file_search_new::process(std::path::Path::new("C:\\"), true).unwrap();
     //
     helper::config_helper::populate_config();
+    file_search_new::init_index_reader().unwrap();
     // file_search::create_file_data();
     // file_search::read_file_in_cache(false);
-    //
-    file_search_new::init_index_reader().unwrap();
 }
 
 fn main() {
@@ -47,6 +46,7 @@ fn main() {
             backend_logging,
             commands::run_cmd::run_cmd,
             commands::open_file::open_file,
+            commands::open_containing_folder::open_containing_folder,
             // commands::file_search::get_indexed_files,
             commands::file_search_new::get_matched_files
         ])

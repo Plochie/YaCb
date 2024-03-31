@@ -67,19 +67,20 @@ export const Item = (props: ItemProps) => {
 								if (sj === ' ') {
 									s = 'Space';
 								}
-								if (j !== w.length - 1) {
-									return (
-										<React.Fragment key={i + j}>
-											<kbd key={i}>{s}</kbd>
-											<span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>
-												+
-											</span>
-										</React.Fragment>
-									);
-								} //
-								else {
-									return <kbd key={i + j}>{s}</kbd>;
-								}
+								// if (j !== w.length - 1) {
+								// 	return (
+								// 		<React.Fragment key={i + j}>
+								// 			<kbd key={i}>{s}</kbd>
+								// 			<span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>
+								// 				+
+								// 			</span>
+								// 		</React.Fragment>
+								// 	);
+								// } //
+								// else {
+								// 	return <kbd key={i + j}>{s}</kbd>;
+								// }
+								return <kbd key={i + j}>{s}</kbd>;
 							});
 						})}
 					</div>

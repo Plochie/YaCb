@@ -11,6 +11,7 @@ type InvokeCommands =
 	// | 'get_indexed_files'
 	| 'run_cmd'
 	| 'open_file'
+	| 'open_containing_folder'
 	| 'get_matched_files';
 
 /**

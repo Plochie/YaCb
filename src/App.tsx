@@ -9,16 +9,6 @@ import {
 } from './wrapper/ipc-wrapper';
 //
 //
-// eslint-disable-next-line no-restricted-imports
-import { window as tauriWindow } from '@tauri-apps/api';
-//
-document.addEventListener('mousemove', async (e) => {
-	if (e.buttons === 1) {
-		await tauriWindow.appWindow.startDragging();
-	}
-});
-//
-//
 function App() {
 	const [isOpen, setIsOpen] = React.useState(true);
 

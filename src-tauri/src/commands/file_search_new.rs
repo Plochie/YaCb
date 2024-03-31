@@ -131,7 +131,7 @@ pub fn process(walk_path: &Path, consider_hidden: bool) -> tantivy::Result<()> {
     //
     let _file_writer_thread: JoinHandle<Result<(), CsvCreateError>> =
         std::thread::spawn(move || {
-            let mut counter = 0;
+            // let mut counter = 0;
             for dir_entry in rx {
                 if let Some(path) = dir_entry.path().to_str() {
                     //
@@ -143,11 +143,11 @@ pub fn process(walk_path: &Path, consider_hidden: bool) -> tantivy::Result<()> {
                     }
                     //
                     index_writer.add_document(doc!(
-                    _path => path.clone(),
+                    _path => path,
                     _type => t
                     ))?;
                 }
-                counter += 1;
+                // counter += 1;
             }
             index_writer.commit()?;
             return Ok(());

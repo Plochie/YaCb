@@ -71,9 +71,6 @@ const RenderGroup = () => {
 						}}
 						sidePanel={
 							<Command.SidePanel>
-								{/* <span style={{ fontWeight: 'bold', color: 'white' }}>
-									side panel: {item.data.path}
-								</span> */}
 								<Command.Item
 									title={'Open'}
 									icon={<FcDownRight />}
@@ -86,7 +83,9 @@ const RenderGroup = () => {
 									title={'Open containing folder'}
 									icon={<FcDownRight />}
 									onClick={() => {
-										invoke('open_file', { resource: item.data.path });
+										invoke('open_containing_folder', {
+											resource: item.data.path,
+										});
 										return 0;
 									}}
 								/>

@@ -1,25 +1,13 @@
 import { CommandContext } from 'app-components/command/context';
 import Actions, { Action, TriggerSuccessResultType } from 'app-src/actions';
+import { clearLastPublishedKeyChangeEvent } from 'app-src/events';
 import { useInputKeyChangeEvent } from 'app-src/hooks';
-import { useEffect, useState } from 'react';
 import { baseTheme } from 'app-src/theme/theme.css';
+import { useState } from 'react';
 import { FcFlashOn } from 'react-icons/fc';
 import { TriggerResultGroup } from './TriggerResultPage/TriggerResultPage';
 import Command from './cmd-components';
-import itemStyles from './cmd-components/styles/CmdItem.css';
-import { clearLastPublishedKeyChangeEvent } from 'app-src/events';
 //
-// TODO: add Partial typescript
-//
-const HomeSidePane = () => {
-	return (
-		<Command.SidePanel>
-			<span style={{ fontWeight: 'bold', color: 'white' }}>
-				This is test of side panel
-			</span>
-		</Command.SidePanel>
-	);
-};
 //
 export const CommandBar = () => {
 	//
