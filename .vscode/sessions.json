@@ -1,0 +1,29 @@
+{
+  "$schema": "https://cdn.statically.io/gh/nguyenngoclongdev/cdn/main/schema/v10/terminal-keeper.json",
+  "theme": "tribe",
+  "active": "default",
+  "activateOnStartup": true,
+  "keepExistingTerminals": false,
+  "noClear": true,
+  "sessions": {
+    "default": [
+      {
+        "name": "tauri",
+        "autoExecuteCommands": true,
+        "icon": "test-view-icon",
+        "color": "terminal.ansiGreen",
+        "commands": [
+          "npm run tauri dev"
+        ]
+      }
+    ],
+    "saved-session": [
+      {
+        "name": "connect",
+        "commands": [
+          ""
+        ]
+      }
+    ]
+  }
+}

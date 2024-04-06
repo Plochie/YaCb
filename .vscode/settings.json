@@ -1,5 +1,6 @@
 {
 	"cSpell.words": [
+		"chrono",
 		"clangd",
 		"cmdk",
 		"cpus",
@@ -7,8 +8,10 @@
 		"kbar",
 		"Mantine",
 		"mexp",
+		"Mmap",
 		"mult",
 		"paresh",
+		"prct",
 		"tauri",
 		"thiserror",
 		"vercel",

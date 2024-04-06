@@ -6,6 +6,14 @@ const inputContainer = style({
 	display: 'flex',
 	alignItems: 'center',
 	flexDirection: 'column',
+	//
+	background: vars.color.primary,
+	borderRadius: vars.components.container.borderRadius,
+	padding: `${calc.multiply(
+		vars.components.input.padding,
+		0.5
+	)} ${calc.multiply(vars.components.input.padding, 0.5)}`,
+	boxShadow: '0 0 20px rgb(0 0 0 / 100%)',
 });
 
 const input = style({

@@ -12,7 +12,7 @@ use tauri::*;
 
 #[tauri::command]
 fn backend_logging(msg: &str) {
-    println!("[frontend_log] {}", msg);
+    info!("[frontend_log] {}", msg);
 }
 
 fn make_tray() -> SystemTray {
@@ -24,8 +24,6 @@ fn make_tray() -> SystemTray {
 }
 
 fn init_app() {
-    // std::env::set_var("YACB_APP_LOG", "info");
-    // pretty_env_logger::init_custom_env("YACB_APP_LOG");
     // crate::commands::file_search_new::process(std::path::Path::new("C:\\"), true).unwrap();
     //
     helper::config_helper::populate_config();
@@ -36,9 +34,11 @@ fn init_app() {
 
 fn main() {
     //
+    helper::logger::init_logger();
+    // env_logger::init();
     let now = Instant::now();
     init_app();
-    println!("[preprocessor] took {} ms", now.elapsed().as_millis());
+    info!("[preprocessor] took {} ms", now.elapsed().as_millis());
     //
     tauri::Builder::default()
         .system_tray(make_tray())

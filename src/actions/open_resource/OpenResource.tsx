@@ -1,25 +1,22 @@
 import Command from 'app-components/command/cmd-components';
-import { useTriggerResult } from 'app-src/hooks';
+import { useInputKeyChangeEvent } from 'app-src/components/command/hooks';
 import { invoke } from 'app-src/wrapper/ipc-wrapper';
+import { useState } from 'react';
 import { FcDownRight, FcFile, FcOpenedFolder } from 'react-icons/fc';
-import { TriggerWordAction, UserAction } from '..';
-
+import { TriggerWordAction } from '..';
+import { writeToClipboard } from 'app-src/wrapper/ipc-wrapper';
 /**
  *
  * @param param0
  * @returns
  */
-const openResourceAction: TriggerWordAction = ({
-	query,
-	setIsActionLoading,
-}) => {
+const openResourceAction: TriggerWordAction = ({ query }) => {
 	if (query.length > 1) {
 		//
 		return new Promise((resolve, reject) => {
 			//
-			setIsActionLoading(true);
+			// setIsActionLoading(true);
 			const invokePromise = invoke<{ path: string; t: string }[]>(
-				// IMPROVEMENT: should use get_matched_files ?
 				'get_matched_files',
 				{
 					query: `${query}`,
@@ -37,7 +34,7 @@ const openResourceAction: TriggerWordAction = ({
 			invokePromise.catch((err) => reject(err));
 			//
 			invokePromise.finally(() => {
-				setIsActionLoading(false);
+				// setIsActionLoading(false);
 			});
 		});
 	} //
@@ -49,57 +46,87 @@ const openResourceAction: TriggerWordAction = ({
 /**
  *
  */
-const RenderGroup = () => {
-	const triggerResult = useTriggerResult(RenderGroup);
+export const RenderGroup = () => {
+	//
+	const [items, setItems] = useState<
+		{ title: string; data: { path: string; t: string } }[]
+	>([]);
+	//
+
+	useInputKeyChangeEvent(({ detail }) => {
+		if (detail.currInput.trim() === '') {
+			setItems([]);
+		}
+		return openResourceAction({ query: detail.currInput }).then((d) => {
+			if (d.success) {
+				setItems(d.success.items as any);
+			}
+		});
+	});
 	//
 	return (
-		<Command.Group title="Open Resource">
+		<Command.Group title="Open Resource" activation="o">
 			<Command.GenericItem>
-				<span style={{ fontSize: '0.75em' }}>
-					Not finding what you&apos;ve looking for, Refresh index{' '}
-				</span>
+				Not finding what you&apos;ve looking for, Refresh index{' '}
 			</Command.GenericItem>
-			{triggerResult?.items.map((item, index) => {
+			{items.map((item, index) => {
 				return (
 					<Command.Item
+						// shortcut={[['ctrl', '1']]}
 						key={index}
 						title={item.data.path}
 						icon={item.data.t === 'd' ? <FcOpenedFolder /> : <FcFile />}
 						onClick={() => {
+							console.log('item clicked');
 							invoke('open_file', { resource: item.data.path });
 							return 0;
 						}}
-						sidePanel={
-							<Command.SidePanel>
-								<Command.Item
-									title={'Open'}
-									icon={<FcDownRight />}
-									onClick={() => {
-										invoke('open_file', { resource: item.data.path });
-										return 0;
-									}}
-								/>
-								<Command.Item
-									title={'Open containing folder'}
-									icon={<FcDownRight />}
-									onClick={() => {
-										invoke('open_containing_folder', {
-											resource: item.data.path,
-										});
-										return 0;
-									}}
-								/>
-							</Command.SidePanel>
-						}
-					/>
+					>
+						<Command.SidePanel visible={true}>
+							<Command.GenericItem>
+								<span>
+									{item.data.t === 'd' ? (
+										<FcOpenedFolder size={'5rem'} />
+									) : (
+										<FcFile size={'5rem'} />
+									)}
+								</span>
+							</Command.GenericItem>
+							<Command.GenericItem>
+								<span>{item.data.path}</span>
+							</Command.GenericItem>
+							<Command.PanelItem
+								title={'Open'}
+								icon={<FcDownRight />}
+								onClick={() => {
+									console.log('open file called');
+									invoke('open_file', { resource: item.data.path });
+									return 0;
+								}}
+							/>
+							<Command.PanelItem
+								title={'Open containing folder'}
+								icon={<FcDownRight />}
+								onClick={() => {
+									console.log('open containing folder called');
+									invoke('open_containing_folder', {
+										resource: item.data.path,
+									});
+									return 0;
+								}}
+							/>
+							<Command.PanelItem
+								title={'Copy Path'}
+								icon={<FcDownRight />}
+								onClick={() => {
+									writeToClipboard(item.data.path);
+									return 0;
+								}}
+							/>
+						</Command.SidePanel>
+					</Command.Item>
 				);
 			})}
 		</Command.Group>
 	);
-};
-
-export const OpenResource: UserAction = {
-	resultGroup: RenderGroup,
-	action: openResourceAction,
-	word: 'o |',
 };

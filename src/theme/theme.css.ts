@@ -23,6 +23,7 @@ export const vars = createThemeContract({
 		},
 		input: {
 			spacing: null,
+			padding: null,
 		},
 		body: {
 			padding: null,
@@ -78,15 +79,16 @@ export const baseTheme = createTheme(vars, {
 	},
 	components: {
 		container: {
-			height: '400px',
+			height: '550px',
 			width: '700px',
 			borderRadius: '0.5rem',
 		},
 		input: {
 			spacing: vars.spacing,
+			padding: calc.multiply(vars.spacing, 2),
 		},
 		body: {
-			padding: vars.spacing,
+			padding: calc.multiply(vars.spacing, 2),
 			textColor: vars.text.font,
 		},
 		group: {

@@ -1,22 +1,18 @@
 use std::{
-    fs::{self, File},
-    io::{self, BufRead, BufReader, ErrorKind, Write},
-    path::{Path, PathBuf},
-    sync::{Arc, RwLock, RwLockReadGuard},
-    thread::{self, available_parallelism, JoinHandle, ScopedJoinHandle},
+    path::Path,
+    thread::{self, JoinHandle},
     time::Instant,
 };
 
 use crate::helper::{config_helper::APP_CONFIG, file_search_helper::CsvRecord};
 use ignore::WalkBuilder;
 
-use lazy_static::lazy_static;
 use once_cell::sync::OnceCell;
+use tantivy::collector::TopDocs;
 use tantivy::doc;
 use tantivy::query::QueryParser;
 use tantivy::schema::*;
 use tantivy::ReloadPolicy;
-use tantivy::{collector::TopDocs, Directory};
 use tantivy::{Index, IndexReader};
 
 static READER: OnceCell<IndexReader> = OnceCell::new();
@@ -54,13 +50,13 @@ pub fn init_index_reader() -> Result<(), tantivy::TantivyError> {
         .try_into()?;
     //
     if let Ok(_s) = SCHEMA.set(_schema) {
-        println!("Global index schema initialized");
+        info!("Global index schema initialized");
     }
     if let Ok(_i) = INDEX.set(_index) {
-        println!("Global index initialized");
+        info!("Global index initialized");
     }
     if let Ok(_r) = READER.set(_reader) {
-        println!("Global index reader initialized");
+        info!("Global index reader initialized");
     }
 
     Ok(())
@@ -90,7 +86,7 @@ pub async fn get_matched_files(query: String) -> Vec<CsvRecord> {
     //
     for (_score, doc_address) in top_docs {
         let retrieved_doc = searcher.doc(doc_address).unwrap();
-        // println!(
+        // info!(
         //     "{}",
         //     retrieved_doc.get_first(_path).unwrap().as_text().unwrap()
         // );
@@ -101,7 +97,7 @@ pub async fn get_matched_files(query: String) -> Vec<CsvRecord> {
             path: String::from(path_str),
         })
     }
-    println!(
+    info!(
         "[get_matched_files] Took {} milliseconds",
         now.elapsed().as_millis()
     );

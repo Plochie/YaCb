@@ -1,0 +1,55 @@
+// padding
+@mixin padding-h($h: 1rem) {
+	padding-left: calc($h);
+	padding-right: calc($h);
+}
+
+@mixin padding-v($v: 1rem) {
+	padding-top: calc($v);
+	padding-bottom: calc($v);
+}
+
+@mixin padding($h: 1rem, $v: 1rem) {
+	@include padding-h($h);
+	@include padding-v($v);
+}
+
+@mixin all-padding($h, $v) {
+	&.padding {
+		@include padding($h, $v);
+	}
+	&.padding-v {
+		@include padding-v($v);
+	}
+	&.padding-h {
+		@include padding-h($h);
+	}
+}
+
+// margin
+@mixin margin-h($h: 1rem) {
+	margin-left: calc($h);
+	margin-right: calc($h);
+}
+
+@mixin margin-v($v: 1rem) {
+	margin-top: calc($v);
+	margin-bottom: calc($v);
+}
+
+@mixin margin($h: 1rem, $v: 1rem) {
+	@include margin-h($h);
+	@include margin-v($v);
+}
+
+@mixin all-margin($h, $v) {
+	&.margin {
+		@include margin($h, $v);
+	}
+	&.margin-v {
+		@include margin-v($v);
+	}
+	&.margin-h {
+		@include margin-h($h);
+	}
+}

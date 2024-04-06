@@ -7,6 +7,7 @@ import {
 	isShortcutRegistered,
 	registerShortcut,
 } from './wrapper/ipc-wrapper';
+import { BrowserRouter, Route, Link, Routes } from 'react-router-dom';
 //
 //
 function App() {
@@ -39,9 +40,22 @@ function App() {
 
 	// return <CommandBar isOpen={isOpen} onOpenChange={setIsOpen} />;
 	return (
-		<div className={styles.app}>
-			<CommandBar></CommandBar>
-		</div>
+		<BrowserRouter>
+			<Routes>
+				<Route
+					path="/home"
+					element={
+						<div className={styles.app}>
+							<CommandBar />
+						</div>
+					}
+				></Route>
+				<Route path="/settings">{/* <About /> */}</Route>
+			</Routes>
+		</BrowserRouter>
+		// <div className={styles.app}>
+		// 	<CommandBar></CommandBar>
+		// </div>
 	);
 }
 

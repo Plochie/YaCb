@@ -1,1 +1,1 @@
-export * from "./command/CommandBar";
+export * from './command/CommandBar';

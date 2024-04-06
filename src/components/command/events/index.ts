@@ -1,4 +1,4 @@
-import { UseKeyChangeEventDetail } from 'app-src/hooks';
+import { UseKeyChangeEventDetail } from 'app-src/components/command/hooks';
 //
 type EventName = '__APP__INPUT_STRING_CHANGE' | '__APP__INPUT_KEY_CHANGE';
 

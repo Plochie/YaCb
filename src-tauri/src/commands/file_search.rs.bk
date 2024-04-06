@@ -123,7 +123,7 @@ pub async fn get_indexed_files(query: String, fetch_latest: bool) -> Vec<CsvReco
     for index in 0..size {
         top_matches.push(matched_strings[index].clone());
     }
-    println!(
+    info!(
         "[get_indexed_files] Took {} milliseconds",
         now.elapsed().as_millis()
     );

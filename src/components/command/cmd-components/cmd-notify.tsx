@@ -31,7 +31,6 @@ export const Notify = (props: NotifyProps) => {
 			<div className={styles.icon}>{icon}</div>
 			<div style={{ flexDirection: 'column' }}>
 				{props.title && <div className={styles.title}>{props.title}</div>}
-				{props.desc && <div className={styles.desc}>{props.desc}</div>}
 			</div>
 			<div>
 				<CgClose />{' '}

@@ -1,14 +1,13 @@
 import React from 'react';
-import { ItemType } from './cmd-item';
-// import { Group } from './cmd-group';
-import styles from './styles/CmdSidePanel.css';
+import { ItemType } from './item/cmd-item';
 
 export type PageType = React.ReactElement<
 	SidePanelProps,
 	React.JSXElementConstructor<React.Component<typeof SidePanel>>
 >;
 interface SidePanelProps {
-	children?: ItemType[];
+	visible?: boolean;
+	children?: ItemType[] | ItemType;
 }
 
 /**
@@ -18,5 +17,11 @@ interface SidePanelProps {
  */
 export const SidePanel = (props: SidePanelProps) => {
 	// render
-	return <div className={styles.sidePanel}>{props.children}</div>;
+	return props.visible ? (
+		<div className="col" style={{ overflowY: 'auto' }} data-yacb="panel">
+			{props.children}
+		</div>
+	) : (
+		<></>
+	);
 };

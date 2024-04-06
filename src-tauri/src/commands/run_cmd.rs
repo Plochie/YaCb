@@ -25,7 +25,7 @@ pub fn run_cmd(command_str: &str, should_return_output: bool) -> CommandResult {
     };
 
     let elapsed = now.elapsed().as_millis();
-    println!("[run_cmd] Took {} milliseconds", elapsed);
+    info!("[run_cmd] Took {} milliseconds", elapsed);
 
     if should_return_output {
         if let Ok(stdout) = String::from_utf8(output.stdout) {

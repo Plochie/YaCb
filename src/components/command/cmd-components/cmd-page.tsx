@@ -1,17 +1,7 @@
-import React, { useEffect, useState } from 'react';
-// import { Group } from './cmd-group';
 import { Action } from 'app-src/actions';
-import { Group } from './cmd-group';
-import { SidePanel } from './cmd-sidepanel';
-import styles from './styles/CmdPage.css';
-import itemStyles from './styles/CmdItem.css';
-import {
-	DocumentKeyEvent,
-	useDocumentKeyEvent,
-} from 'app-src/hooks/useDocumentKeyEvent';
-//
-import { atom, useAtomValue } from 'jotai';
-export const sidePanelAtom: any = atom(0);
+import { useDocumentKeyEvent } from 'app-src/components/command/hooks/useDocumentKeyEvent';
+import React, { useEffect, useRef } from 'react';
+import { useInputKeyChangeEvent } from 'app-src/components/command/hooks';
 
 export type PageType = React.ReactElement<
 	PageProps,
@@ -24,76 +14,126 @@ export interface PageProps {
 	trigger?: Action;
 }
 
-//
-const checkComponentTypes = (e: any, m: any) => {
-	// max depth check till 4 nesting
-	let element = e;
-	for (let i = 0; i < 4; i++) {
-		if (element.type === m) {
-			return true;
-		} else if (typeof element.type === 'function') {
-			element = element.type({});
-			continue;
-		}
-		break;
-	}
-	return false;
-};
+interface Store {
+	itemIndex: number;
+	sideItemIndex: number;
+	focus: 'group' | 'panel';
+}
+
 /**
  *
  * @param props
  * @returns
  */
 export const Page = (props: PageProps) => {
-	// item index will store current selected item
-	const store = React.useRef({ itemIndex: 0 }).current;
-	const sidePanel = useAtomValue(sidePanelAtom);
 	//
-	const updateItems = (event?: DocumentKeyEvent) => {
-		//
-		const items = document.querySelectorAll(
-			'[data-yacb="item-container"]'
-		) as NodeListOf<HTMLDivElement>;
-		const page = document.querySelector('[data-yacb="page"]') as HTMLDivElement;
-		if (event === 'KEY_DOWN') {
-			store.itemIndex =
-				store.itemIndex < items.length - 1 ? store.itemIndex + 1 : 0;
-		} //
-		else if (event === 'KEY_UP') {
-			store.itemIndex =
-				store.itemIndex > 0 ? store.itemIndex - 1 : items.length - 1;
-		} //
-		else if (event === 'ENTER') {
-			items[store.itemIndex].click();
+	//
+	// item index will store current selected item
+	const store = useRef<Store>({
+		itemIndex: 0,
+		sideItemIndex: 0,
+		focus: 'group',
+	}).current;
+	//
+	const updateItems = (e?: KeyboardEvent) => {
+		if (store.focus === 'group') {
+			//
+			const items = document.querySelectorAll(
+				'[data-yacb="item-container"]'
+			) as NodeListOf<HTMLDivElement>;
+			const page = document.querySelector(
+				'[data-yacb="page"]'
+			) as HTMLDivElement;
+			//
+			if (e?.key === 'ArrowDown') {
+				store.itemIndex =
+					store.itemIndex < items.length - 1 ? store.itemIndex + 1 : 0;
+			} //
+			else if (e?.key === 'ArrowUp') {
+				store.itemIndex =
+					store.itemIndex > 0 ? store.itemIndex - 1 : items.length - 1;
+			} //
+			else if (e?.key === 'ArrowRight') {
+				store.focus = 'panel';
+				updateItems(e);
+			} //
+			else if (e?.key === 'Enter') {
+				items[store.itemIndex].click();
+			}
+			//
+			// console.log({ store, items, page });
+			//
+			items.forEach((item, index) => {
+				let active = false;
+				if (index === store.itemIndex) {
+					active = true;
+					if (store.itemIndex === 0) {
+						page.scrollIntoView({
+							behavior: 'auto',
+							block: 'start',
+						});
+					} else {
+						item.scrollIntoView({
+							behavior: 'auto',
+							block: 'nearest',
+						});
+					}
+				}
+				const stateChangeEvent = new CustomEvent('stateChange', {
+					detail: { active },
+				});
+				item.dispatchEvent(stateChangeEvent);
+			});
 		}
 		//
-		items.forEach((itemContainer, index) => {
-			itemContainer.setAttribute('data-yacb-item-index', '' + index);
-			const item = itemContainer.querySelector('[data-yacb="item"]');
-			if (index === store.itemIndex) {
-				// itemContainer.classList.add(itemStyles.itemHover);
-				item?.classList.add(itemStyles.itemHover);
-				if (store.itemIndex === 0) {
-					page.scrollIntoView({
-						behavior: 'auto',
-						block: 'start',
-					});
-				} else {
-					itemContainer.scrollIntoView({
-						behavior: 'auto',
-						block: 'nearest',
-					});
-				}
-				itemContainer.setAttribute('data-yacb-item-active', 'true');
-			} else {
-				// itemContainer.classList.remove(itemStyles.itemHover);
-				item?.classList.remove(itemStyles.itemHover);
-				itemContainer.setAttribute('data-yacb-item-active', 'false');
+		//
+		else if (store.focus === 'panel') {
+			//
+			const sideItems = document.querySelectorAll(
+				'[data-yacb="panel"] > [data-yacb="panel-item-container"]'
+				// '[data-yacb="panel"]>div'
+			) as NodeListOf<HTMLDivElement>;
+			//
+			console.log(sideItems);
+			if (e?.key === 'ArrowLeft') {
+				store.focus = 'group';
+				store.sideItemIndex = 0;
+				updateItems(e);
+			} //
+			else if (e?.key === 'ArrowDown') {
+				store.sideItemIndex =
+					store.sideItemIndex < sideItems.length - 1
+						? store.sideItemIndex + 1
+						: 0;
+			} //
+			else if (e?.key === 'ArrowUp') {
+				store.sideItemIndex =
+					store.sideItemIndex > 0
+						? store.sideItemIndex - 1
+						: sideItems.length - 1;
+			} //
+			else if (e?.key === 'Enter') {
+				sideItems[store.sideItemIndex].click();
 			}
-		});
+			//
+			sideItems.forEach((sideItem, index) => {
+				let active = false;
+				if (store.sideItemIndex === index && store.focus !== 'group') {
+					active = true;
+				}
+				const stateChangeEvent = new CustomEvent('stateChange', {
+					detail: { active },
+					bubbles: false,
+					cancelable: false,
+					composed: false,
+				});
+				sideItem.dispatchEvent(stateChangeEvent);
+			});
+		}
 	};
 	//
 	useEffect(() => {
+		// this is for first render to highlight first element in the items list
 		updateItems();
 	}, []);
 	//
@@ -102,25 +142,16 @@ export const Page = (props: PageProps) => {
 		updateItems(event);
 	});
 	//
-	// visible items
-	const groups: any[] = [];
-	const sidePanels: any[] = [];
-	React.Children.toArray(props.children ?? []).forEach((child: any) => {
-		if (checkComponentTypes(child, SidePanel)) {
-			sidePanels.push(child);
-		} else {
-			checkComponentTypes(child, Group);
-			groups.push(child);
-		}
+	useInputKeyChangeEvent(() => {
+		// IMPROVEMENT: might be causing some performance hit as rendering might be happening
+		updateItems();
 	});
 	// render
 	return (
-		<div className={styles.pageContainer} data-yacb="page">
-			<div className={styles.groupsContainer}>{groups}</div>
-			{/* {sidePanels && sidePanels.length > 0 && (
-				<div className={styles.pageContainer}>{sidePanels}</div>
-			)} */}
-			{sidePanel as any}
+		<div className="row" data-yacb="page">
+			{/* <div className="col">{props.children}</div> */}
+			{props.children}
+			{/* Side panel will be added here using portal from item component */}
 		</div>
 	);
 };

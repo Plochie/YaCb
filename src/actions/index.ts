@@ -1,8 +1,8 @@
 import { ItemProps } from 'app-src/components/command/cmd-components';
 import { ReactElement } from 'react';
-import { MathEvalAction } from './mathematics/MathAction';
-import { OpenResource } from './open_resource/OpenResource';
-import { ColorPickerAction } from './color_picker/ColorPicker';
+// import { MathEvalAction } from './mathematics/MathAction';
+// import { OpenResource } from './open_resource/OpenResource';
+// import { ColorPickerAction } from './color_picker/ColorPicker';
 import { nanoid } from 'nanoid';
 import { SettingsActions } from './settings/SettingsActions';
 
@@ -32,7 +32,7 @@ export type TriggerResultType = {
 export interface TriggerWordActionParams {
 	query: string;
 	keyEvent?: React.KeyboardEvent<HTMLInputElement>;
-	setIsActionLoading: (isLoading: boolean) => void;
+	// setIsActionLoading: (isLoading: boolean) => void;
 }
 
 export type TriggerWordAction = (
@@ -61,10 +61,10 @@ export interface Action extends UserAction {
 }
 //
 const Actions: Action[] = [
-	OpenResource,
-	MathEvalAction,
+	// OpenResource,
+	// MathEvalAction,
 	// RunTerminal,
-	ColorPickerAction,
+	// ColorPickerAction,
 	SettingsActions,
 ]
 	// assign unique id to each action

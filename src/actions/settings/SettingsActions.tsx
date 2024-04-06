@@ -1,7 +1,5 @@
 import Command from 'app-components/command/cmd-components';
-import { useTriggerResult } from 'app-src/hooks';
-import { invoke } from 'app-src/wrapper/ipc-wrapper';
-import { FcFile, FcOpenedFolder, FcSettings } from 'react-icons/fc';
+import { FcSettings } from 'react-icons/fc';
 import { TriggerWordAction, UserAction } from '..';
 
 /**
@@ -19,7 +17,7 @@ const settingsAction: TriggerWordAction = () => {
  *
  */
 const RenderGroup = () => {
-	const _triggerResult = useTriggerResult(RenderGroup);
+	// const _triggerResult = useTriggerResult(RenderGroup);
 	//
 	return (
 		<Command.Group title="Settings">

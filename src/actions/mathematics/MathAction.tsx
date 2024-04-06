@@ -1,8 +1,9 @@
-import Command from 'app-components/command/cmd-components';
-import { useTriggerResult } from 'app-src/hooks';
+import Command, {
+	OnInputChangeParams,
+} from 'app-components/command/cmd-components';
 import Mexp from 'math-expression-evaluator';
+import { useState } from 'react';
 import { FcCalculator } from 'react-icons/fc';
-import { TriggerWordAction, UserAction } from '..';
 
 const mexp = new Mexp();
 const supportedTokens: string[] = mexp.tokens
@@ -10,61 +11,47 @@ const supportedTokens: string[] = mexp.tokens
 	.map((t) => t.token)
 	.filter((t) => !/[0-9]| /.test(t));
 //
-const mathEvalAction: TriggerWordAction = ({ query }) => {
+//
+const ACTIVATION = 'm';
+//
+export const RenderGroup = () => {
 	//
-	return new Promise((resolve) => {
+	const [result, setResult] = useState<string | null>(null);
+	//
+	const onInputChange = (e: OnInputChangeParams) => {
 		//
-		try {
-			const ans = mexp.eval(query, [], {});
-			resolve({
-				success: {
-					items: [{ title: 'calculate', data: ans.toString() }],
-				},
-			});
-		} catch (err) {
-			resolve({
-				ignore: { caller: 'mathEvalAction', msg: 'expression is not complete' },
-			});
+		if (e.currentInput.trim() === '') {
+			setResult(null);
 		}
-	});
-};
-//
-//
-const RenderGroup = () => {
-	const triggerResult = useTriggerResult(RenderGroup);
 
+		const ans = mexp.eval(e.query, [], {});
+		setResult(ans.toString());
+	};
+	//
+	//
+	//
 	return (
-		<Command.Group title="Answer">
-			{triggerResult?.items.map((item, index) => {
-				return (
-					<Command.Item
-						key={index}
-						title="math output"
-						alwaysVisible
-						icon={<FcCalculator />}
-					>
-						<span style={{ fontSize: '1.5em', lineHeight: '1em' }}>
-							<strong>{item.data}</strong>
-						</span>
-						<div
-							style={{
-								fontSize: '0.8em',
-								fontWeight: 'bold',
-								marginTop: '5px',
-							}}
-						>
-							{`"${supportedTokens.join('" | "')}"`}
-						</div>
-					</Command.Item>
-				);
-			})}
+		<Command.Group
+			title="Answer"
+			activation={ACTIVATION}
+			onInputChange={onInputChange}
+		>
+			<Command.Item icon={<FcCalculator />}>
+				<span style={{ fontSize: '1.5em', lineHeight: '1em' }}>
+					<strong>= {result}</strong>
+				</span>
+			</Command.Item>
+			<Command.GenericItem>
+				<div
+					style={{
+						fontSize: '0.8em',
+						fontWeight: 'bold',
+						marginTop: '5px',
+					}}
+				>
+					{`"${supportedTokens.join('" | "')}"`}
+				</div>
+			</Command.GenericItem>
 		</Command.Group>
 	);
-};
-
-export const MathEvalAction: UserAction = {
-	word: '',
-	action: mathEvalAction,
-	resultGroup: RenderGroup,
-	priority: 1,
 };

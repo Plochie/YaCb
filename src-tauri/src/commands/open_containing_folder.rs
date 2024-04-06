@@ -11,9 +11,9 @@ pub fn open_containing_folder(resource: &str) {
     match open::that(containing_folder) {
         Ok(()) => {}
         Err(err) => {
-            println!("An error occurred when opening '{}': {}", resource, err);
+            info!("An error occurred when opening '{}': {}", resource, err);
         }
     }
     let elapsed = now.elapsed().as_millis();
-    println!("[open_containing_folder] Took {} milliseconds", elapsed);
+    info!("[open_containing_folder] Took {} milliseconds", elapsed);
 }
