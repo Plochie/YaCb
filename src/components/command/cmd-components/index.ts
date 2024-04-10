@@ -15,7 +15,6 @@ import { Input } from './cmd-input';
 import { Item } from './item/cmd-item';
 import { GenericItem } from './item/cmd-generic-item';
 import { PanelItem } from './item/cmd-panel-item';
-import { Notify } from './cmd-notify';
 import { Page } from './cmd-page';
 import { Wrapper } from './cmd-wrapper';
 import { SidePanel } from './cmd-sidepanel';
@@ -32,7 +31,6 @@ const Command = {
 	Body,
 	Footer,
 	Wrapper,
-	Notify,
 	SidePanel,
 	PanelItem,
 };

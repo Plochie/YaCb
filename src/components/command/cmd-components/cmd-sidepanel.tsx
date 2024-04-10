@@ -8,6 +8,7 @@ export type PageType = React.ReactElement<
 interface SidePanelProps {
 	visible?: boolean;
 	children?: ItemType[] | ItemType;
+	flex?: number;
 }
 
 /**
@@ -18,7 +19,11 @@ interface SidePanelProps {
 export const SidePanel = (props: SidePanelProps) => {
 	// render
 	return props.visible ? (
-		<div className="col" style={{ overflowY: 'auto' }} data-yacb="panel">
+		<div
+			className="col"
+			style={{ overflowY: 'auto', flex: props.flex ?? 0.9 }}
+			data-yacb="panel"
+		>
 			{props.children}
 		</div>
 	) : (

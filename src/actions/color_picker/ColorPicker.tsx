@@ -1,48 +1,27 @@
 import Command from 'app-components/command/cmd-components';
-import { writeToClipboard } from 'app-src/wrapper/ipc-wrapper';
+import { Colord, colord, extend } from 'colord';
+import harmonies from 'colord/plugins/harmonies';
+import mixPlugin from 'colord/plugins/mix';
 import { useState } from 'react';
 import { HslaColorPicker } from 'react-colorful';
 import './ColorPicker.scss';
-import { colord, extend } from 'colord';
-import mixPlugin from 'colord/plugins/mix';
-import harmonies from 'colord/plugins/harmonies';
+import { Shade } from './Shade';
+import { COLOR_FORMATS } from './constant';
+import { LuPipette } from 'react-icons/lu';
+import { openWindow } from 'app-src/wrapper/ipc-wrapper';
 extend([mixPlugin, harmonies]);
-
 //
 export const ColorPickerAction = () => {
 	//
 	const [color, setColor] = useState({ h: 0, s: 100, l: 50, a: 1 });
+	const [format, setFormat] = useState<(typeof COLOR_FORMATS)[number]>('Hex');
 	//
-	const renderColors = (colors: string[]) => {
+	const renderColors = (colors: Colord[], position: 'col' | 'row') => {
 		return (
-			<div className="shades col" style={{ gridArea: 'shades1' }}>
-				{colors.map((color, id) => {
-					const c = colord(color);
-					let textColor = c.isLight() ? 'black' : 'white';
-					if (c.alpha() < 0.5) {
-						textColor = 'black';
-					}
-
-					return (
-						<div
-							className="react-colorful__alpha, react-colorful__alpha-pointer shadeWrapper"
-							key={id}
-							// style={{ backgroundColor: color }}
-							onClick={() => {
-								writeToClipboard(color);
-							}}
-						>
-							<div className="shade row" style={{ backgroundColor: color }}>
-								<div className="col-1">
-									<span style={{ color: textColor }}>100</span>
-								</div>
-								<div className="col">
-									<span style={{ color: textColor }}>{color}</span>
-								</div>
-							</div>
-						</div>
-					);
-				})}
+			<div className={`shades ${position}`}>
+				{colors.map((color, id) => (
+					<Shade key={id} color={color} format={format} />
+				))}
 			</div>
 		);
 	};
@@ -50,69 +29,65 @@ export const ColorPickerAction = () => {
 	return (
 		<Command.Group title="Color Picker" activation="c">
 			<Command.GenericItem>
-				<div className="responsive">
-					<HslaColorPicker color={color} onChange={setColor} />
-					{renderColors(
-						colord(color)
-							.tones(5)
-							.map((s) => s.toHslString())
-					)}
-					{renderColors(
-						colord(color)
-							.tints(5)
-							.map((s) => s.toHslString())
-					)}
-					{/* {renderColors(
-						colord(color)
-							.harmonies('triadic')
-							.map((s) => s.toHslString())
-					)} */}
+				<div className="col">
 					{/*  */}
-					{/* <div className="shades" style={{ gridArea: 'shades1' }}>
-						{generateShades(color).map((shade, id) => (
-							<div
-								className="shade"
-								key={id}
-								style={{ backgroundColor: shade.color }}
-								onClick={() => {
-									writeToClipboard(shade.color);
-								}}
-							>
-								<span>{shade.prct + '0'}</span>
-								<span>{shade.color}</span>
-							</div>
-						))}
-					</div> */}
-					{/* <div className="shades" style={{ gridArea: 'shades2' }}>
-						{generateAnalogousShades(color).map((shade, id) => (
-							<div
-								className="shade"
-								key={id}
-								style={{ backgroundColor: shade }}
-								onClick={() => {
-									writeToClipboard(shade);
-								}}
-							></div>
-						))}
-					</div> */}
-					{/* <div className="shades" style={{ gridArea: 'color-string' }}>
-						<table>
-							<tbody>
-								<tr>
-									<td>HEX</td>
-									<td>{color}</td>
-								</tr>
-								<tr>
-									<td>RGB</td>
-									<td>{color}</td>
-								</tr>
-								<tr>
-									<td>HSL</td>
-									<td>{color}</td>
-								</tr>
-							</tbody>
-						</table>
-					</div> */}
+					<div className="row format-select">
+						<LuPipette
+							className="text-lg"
+							onClick={async () => {
+								// invoke('color_picker').then((d) => {
+								// 	console.log(d);
+								// 	//
+								// 	// console.log('setting window');
+								// 	const webview = new WebviewWindow('theUniqueLabel', {
+								// 		url: '/about',
+								// 	});
+								// 	webview.once('tauri://created', function () {
+								// 		// webview window successfully created
+								// 		console.log('setting window opened');
+								// 	});
+								// 	webview.once('tauri://error', function (e) {
+								// 		// an error occurred during webview window creation
+								// 		console.log(e);
+								// 	});
+								// });
+								await openWindow(
+									'/color_picker_window',
+									'color_picker_window',
+									50,
+									50
+								);
+							}}
+						/>
+						<select
+							name="format"
+							id="format"
+							onChange={(e) => {
+								setFormat(e.target.value as any);
+							}}
+						>
+							{COLOR_FORMATS.map((format, index) => (
+								<option key={index} value={format}>
+									{format}
+								</option>
+							))}
+						</select>
+						{/*  */}
+						<Shade color={colord(color)} format={format} />
+					</div>
+					{/*  */}
+					<div className="responsive row  padding-v">
+						<HslaColorPicker color={color} onChange={setColor} />
+						{renderColors(colord(color).tones(5), 'col')}
+						{renderColors(colord(color).tints(5), 'col')}
+					</div>
+					{/*  */}
+					<div className="row padding-v">
+						{renderColors(
+							colord(color).harmonies('double-split-complementary'),
+							'row'
+						)}
+					</div>
 				</div>
 			</Command.GenericItem>
 		</Command.Group>

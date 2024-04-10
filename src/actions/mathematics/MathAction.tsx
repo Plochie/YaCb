@@ -14,7 +14,7 @@ const supportedTokens: string[] = mexp.tokens
 //
 const ACTIVATION = 'm';
 //
-export const RenderGroup = () => {
+export const MathEvalAction = () => {
 	//
 	const [result, setResult] = useState<string | null>(null);
 	//

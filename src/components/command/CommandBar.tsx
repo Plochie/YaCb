@@ -1,36 +1,25 @@
-import { MathEvalAction } from 'app-src/actions/mathematics';
-import { OpenResource } from 'app-src/actions/open_resource';
-import { baseTheme } from 'app-src/theme/theme.css';
-import Command from './cmd-components';
 import { ColorPickerAction } from 'app-src/actions/color_picker/ColorPicker';
+import { MathEvalAction } from 'app-src/actions/mathematics/MathAction';
+import { OpenResourceAction } from 'app-src/actions/open_resource/OpenResource';
+import Command from './cmd-components';
 //
 //
 export const CommandBar = () => {
 	//
 	return (
-		<Command.Wrapper theme={baseTheme}>
+		<Command.Wrapper>
 			<Command.Input />
 			<Command.Body>
-				<Command.Page id="page.1" title="page.1">
+				{/* <Command.Page id="home" title="home">
+				</Command.Page> */}
+				<Command.Page id="result" title="result">
 					{/* <SampleTask.resultGroup /> */}
 					{/* <LongRunningAction.resultGroup showPanel={false} /> */}
 					<ColorPickerAction />
-					<OpenResource.resultGroup />
-					<MathEvalAction.resultGroup />
+					<OpenResourceAction />
+					<MathEvalAction />
 				</Command.Page>
 			</Command.Body>
 		</Command.Wrapper>
 	);
 };
-
-/**
-
-Wrapper
-	Input
-	Body
-		Page
-			Group
-		Footer
-		Notify
-
- */

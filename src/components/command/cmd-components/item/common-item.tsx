@@ -1,5 +1,6 @@
-import styles from 'app-src/components/command/cmd-components/styles/CmdItem.css';
+// import styles from 'app-src/components/command/cmd-components/styles/CmdItem.css';
 import React, { useEffect, useRef, useState } from 'react';
+import styles from '../styles/Command.module.scss';
 
 export interface CommonItemProps {
 	title?: string;
@@ -58,7 +59,7 @@ export const CommonItem = (props: CommonItemProps) => {
 				)}
 				{/* item content */}
 				<div className="col padding-v padding-h">
-					<div>{props.title}</div>
+					<div className={styles.title}>{props.title}</div>
 					{/* components related to specific item components */}
 					{props.children}
 				</div>

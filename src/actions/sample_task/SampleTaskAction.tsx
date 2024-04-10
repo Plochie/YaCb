@@ -23,7 +23,7 @@ export const RenderGroup = () => {
 	//
 	//
 	return (
-		<Command.Group title="Sample Task">
+		<Command.Group title="Sample Task" activation="test">
 			<Command.Item
 				title="Sample Task"
 				icon={<RiTestTubeLine />}

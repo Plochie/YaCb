@@ -14,15 +14,31 @@
 	@include padding-v($v);
 }
 
-@mixin all-padding($h, $v) {
-	&.padding {
+@mixin all-padding($h, $v, $has-parent: true) {
+	//
+	$prefix: '.';
+	@if $has-parent {
+		$prefix: '&.';
+	}
+	//
+	#{$prefix}padding {
 		@include padding($h, $v);
 	}
-	&.padding-v {
+	#{$prefix}padding-v {
 		@include padding-v($v);
 	}
-	&.padding-h {
+	#{$prefix}padding-h {
 		@include padding-h($h);
+	}
+	//
+	#{$prefix}padding-sm {
+		@include padding(calc($h * 0.5), calc($v * 0.5));
+	}
+	#{$prefix}padding-v-sm {
+		@include padding-v(calc($v * 0.5));
+	}
+	#{$prefix}padding-h-sm {
+		@include padding-h(calc($h * 0.5));
 	}
 }
 
@@ -42,14 +58,20 @@
 	@include margin-v($v);
 }
 
-@mixin all-margin($h, $v) {
-	&.margin {
+@mixin all-margin($h, $v, $has-parent: true) {
+	//
+	$prefix: '.';
+	@if $has-parent {
+		$prefix: '&.';
+	}
+	//
+	#{$prefix}margin {
 		@include margin($h, $v);
 	}
-	&.margin-v {
+	#{$prefix}margin-v {
 		@include margin-v($v);
 	}
-	&.margin-h {
+	#{$prefix}margin-h {
 		@include margin-h($h);
 	}
 }

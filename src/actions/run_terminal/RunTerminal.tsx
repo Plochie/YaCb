@@ -4,7 +4,7 @@ import { Action } from '..';
 
 const RenderElement = () => {
 	return (
-		<Command.Group title="Terminal">
+		<Command.Group title="Terminal" activation=">">
 			<Command.Item
 				title="⌨️&nbsp;&nbsp;&nbsp;&nbsp;Run terminal command"
 				onClick={() => {

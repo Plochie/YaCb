@@ -3,7 +3,7 @@
 		"beforeDevCommand": "npm run dev",
 		"beforeBuildCommand": "npm run build",
 		"devPath": "http://localhost:1420",
-		"distDir": "./dist",
+		"distDir": "../dist",
 		"withGlobalTauri": false
 	},
 	"package": {
@@ -27,7 +27,7 @@
 			"window": {
 				"all": false,
 				"center": false,
-				"close": false,
+				"close": true,
 				"create": true,
 				"hide": true,
 				"maximize": false,
@@ -47,7 +47,7 @@
 				"setIgnoreCursorEvents": false,
 				"setMaxSize": false,
 				"setMinSize": false,
-				"setPosition": false,
+				"setPosition": true,
 				"setResizable": false,
 				"setSize": true,
 				"setSkipTaskbar": false,
@@ -85,7 +85,7 @@
 				"resizable": false,
 				"label": "main",
 				"title": "YaCb",
-				"decorations": false,
+				"decorations": true,
 				"skipTaskbar": false,
 				"transparent": true,
 				"alwaysOnTop": true,
@@ -93,12 +93,7 @@
 				"width": 750,
 				"height": 610,
 				"focus": true,
-				"url": "/home"
-			},
-			{
-				"label": "setting",
-				"title": "Settings",
-				"url": "/settings"
+				"url": "/home_window"
 			}
 		],
 		"systemTray": {

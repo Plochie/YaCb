@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import styles from './App.css';
 import { CommandBar } from './components';
 import {
 	appWindow,
@@ -8,20 +7,21 @@ import {
 	registerShortcut,
 } from './wrapper/ipc-wrapper';
 import { BrowserRouter, Route, Link, Routes } from 'react-router-dom';
+import { ColorPickerWindow } from './windows';
 //
 //
 function App() {
 	const [isOpen, setIsOpen] = React.useState(true);
 
 	useEffect(() => {
-		(async () => {
-			if (!(await isShortcutRegistered('F15'))) {
-				await registerShortcut('F15', () => {
-					console.log('Shortcut triggered from fe');
-					// setIsOpen((s) => !s);
-				});
-			}
-		})();
+		// (async () => {
+		// 	if (!(await isShortcutRegistered('F15'))) {
+		// 		await registerShortcut('F15', () => {
+		// 			console.log('Shortcut triggered from fe');
+		// 			// setIsOpen((s) => !s);
+		// 		});
+		// 	}
+		// })();
 	});
 
 	//
@@ -43,14 +43,15 @@ function App() {
 		<BrowserRouter>
 			<Routes>
 				<Route
-					path="/home"
+					path="/home_window"
 					element={
-						<div className={styles.app}>
+						<div className="app">
 							<CommandBar />
 						</div>
 					}
 				></Route>
-				<Route path="/settings">{/* <About /> */}</Route>
+				<Route path="/settings_window" />
+				<Route path="/color_picker_window" element={<ColorPickerWindow />} />
 			</Routes>
 		</BrowserRouter>
 		// <div className={styles.app}>

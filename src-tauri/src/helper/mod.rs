@@ -1,5 +1,6 @@
 pub(crate) mod config_helper;
 pub(crate) mod file_search_helper;
+pub(crate) mod global_input_event;
 pub(crate) mod logger;
 
 use std::fs;

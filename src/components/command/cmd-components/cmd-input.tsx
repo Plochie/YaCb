@@ -4,8 +4,7 @@ import { useRef } from 'react';
 import { LuSearch, LuSettings } from 'react-icons/lu';
 import { PiDotsSixVerticalBold } from 'react-icons/pi';
 import { useCommandStore } from 'app-src/components/command/store';
-import styles from 'app-src/components/command/cmd-components/styles/CmdInput.css';
-// import { WebviewWindow } from '@tauri-apps/api/window';
+import styles from './styles/Command.module.scss';
 
 //
 //
@@ -16,10 +15,16 @@ export const Input = () => {
 	const _setCurrentInput = useCommandStore((s) => s.setCurrentInput);
 	//
 	return (
-		<div className={styles.inputContainer}>
+		<div className={`${styles.inputContainer} row padding-sm br-sm`}>
 			<div className={styles.input}>
+				<div className="is-left">
+					{_isLoading ? (
+						<Loader isLoading={_isLoading} />
+					) : (
+						<LuSearch className={styles.icon} />
+					)}
+				</div>
 				<input
-					// className={styles.input}
 					autoFocus
 					onKeyUp={(keyEvent) => {
 						// e.preventDefault();
@@ -44,12 +49,7 @@ export const Input = () => {
 						}
 					}}
 				></input>
-				<div className={styles.rightContainer}>
-					{_isLoading ? (
-						<Loader isLoading={_isLoading} />
-					) : (
-						<LuSearch className={styles.icon} />
-					)}
+				<div className="is-right">
 					{/* setting icon */}
 					<LuSettings
 						className={styles.icon}

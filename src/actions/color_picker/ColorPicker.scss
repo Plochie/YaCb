@@ -1,12 +1,21 @@
 $pointer-size: 1em;
 
+//
+.format-select {
+	gap: 0.5rem;
+	align-items: center;
+}
+//
 .responsive {
 	display: flex;
 	gap: 1rem;
 	flex: 1;
+	min-height: 250px;
 	//
 	.react-colorful {
-		flex: 1;
+		flex: 2;
+		width: auto;
+		height: auto;
 
 		.react-colorful__pointer {
 			width: $pointer-size;
@@ -20,30 +29,25 @@ $pointer-size: 1em;
 	}
 	//
 	.shades {
-		flex: 0.5;
 		display: flex;
 		flex-direction: column;
-		gap: 6px;
+		//
 		.shadeWrapper {
-			border-radius: 0.4em;
-			//
-			.shade {
-				border-radius: inherit;
-				padding: 0.8rem;
-				transition: 0.1s ease-in-out;
-				font-family: monospace;
-
-				&:hover {
-					transform: scaleX(1.1) scaleY(1.3);
-					z-index: 10;
-				}
-
-				span {
-					font-size: 0.8rem;
-					font-weight: bold;
-					display: block;
-				}
+			transition: 0.1s ease-in-out;
+			background-color: #fff;
+			background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill-opacity=".05"><path d="M8 0h8v8H8zM0 8h8v8H0z"/></svg>');
+			&:hover {
+				transform: scale(1.25);
+				z-index: 10;
 			}
 		}
 	}
+}
+
+.shade {
+	font-family: monospace;
+	// border-radius: inherit;
+	font-size: 0.8rem;
+	font-weight: bold;
+	flex: 1;
 }

@@ -1,0 +1,117 @@
+// colors
+$command-color-primary: hsl(0, 0%, 10%);
+$command-color-secondary: hsl(15, 100%, 20%);
+$command-color-textColor: hsl(0, 0%, 70%);
+$command-color-hoverTextColor: hsl(0, 0%, 80%);
+//
+$command-width: 700px;
+$command-height: 550px;
+$command-spacing: 0.45rem;
+$command-font-size: 0.9rem;
+// $command-border-radius: 0.5rem;
+
+// wrapper
+.commandBarContainer {
+	color: $command-color-textColor;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	word-break: break-word;
+	max-height: $command-height;
+	padding: calc($command-spacing * 3);
+}
+
+// input
+.inputContainer {
+	background: $command-color-primary;
+	box-shadow: 0 0 10px rgb(0 0 0 / 100%);
+	// input
+	.input {
+		display: flex;
+		width: 100%;
+		//
+		input {
+			box-sizing: border-box;
+			font-weight: bold;
+			border: none;
+			width: 100%;
+			background: transparent;
+			font-size: calc($command-font-size * 1.8);
+			padding: $command-spacing;
+			outline: none;
+			color: inherit;
+		}
+		//
+		.icon {
+			font-size: calc($command-font-size * 2);
+			margin: 0 4px 0 4px;
+			opacity: 0.6;
+		}
+	}
+}
+
+//
+.bodyContainer {
+	overflow: hidden;
+	margin-top: calc($command-spacing * 2);
+	background: $command-color-primary;
+	box-shadow: 0 0 10px rgb(0 0 0 / 100%);
+	display: flex;
+}
+
+// item
+.item {
+	padding: $command-spacing;
+	align-items: center;
+	flex: 1;
+	border-top: 1px solid #ffffff20;
+	font-size: $command-font-size;
+	//
+	&:hover {
+		color: $command-color-hoverTextColor;
+		background-color: $command-color-secondary;
+	}
+	//
+	&:last-child {
+		border-bottom: 1px solid #ffffff20;
+	}
+	//
+	&.itemHover {
+		color: $command-color-hoverTextColor;
+		background-color: $command-color-secondary;
+	}
+	//
+	.title {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		// line-height: 16px; /* fallback */
+		// max-height: 32px; /* fallback */
+		-webkit-line-clamp: 2; /* number of lines to show */
+		-webkit-box-orient: vertical;
+		max-height: calc($command-font-size * 4);
+	}
+	//
+	.shortcut {
+		display: flex;
+		margin-left: auto;
+		gap: 5px;
+	}
+}
+.generic-item {
+	padding: $command-spacing;
+}
+
+// const ItemHoverCss: ComplexStyleRule = {
+// 	backgroundColor: vars.components.item.hoverBackground,
+// 	// fontWeight: 'bold',
+// 	color: vars.components.item.hoverFontColor,
+// };
+
+// const item = style({
+// 	padding: vars.spacing,
+// 	alignItems: 'center',
+// 	flex: 1,
+// 	borderTop: '1px solid #FFFFFF20',
+// 	':hover': ItemHoverCss,
+// });

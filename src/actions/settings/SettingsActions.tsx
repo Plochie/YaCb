@@ -20,7 +20,7 @@ const RenderGroup = () => {
 	// const _triggerResult = useTriggerResult(RenderGroup);
 	//
 	return (
-		<Command.Group title="Settings">
+		<Command.Group title="Settings" activation="s">
 			<Command.Item
 				title="Global Shortcut"
 				icon={<FcSettings />}

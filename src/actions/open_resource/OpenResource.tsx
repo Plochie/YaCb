@@ -46,7 +46,7 @@ const openResourceAction: TriggerWordAction = ({ query }) => {
 /**
  *
  */
-export const RenderGroup = () => {
+export const OpenResourceAction = () => {
 	//
 	const [items, setItems] = useState<
 		{ title: string; data: { path: string; t: string } }[]
@@ -82,7 +82,7 @@ export const RenderGroup = () => {
 							return 0;
 						}}
 					>
-						<Command.SidePanel visible={true}>
+						<Command.SidePanel visible={true} flex={0.7}>
 							<Command.GenericItem>
 								<span>
 									{item.data.t === 'd' ? (

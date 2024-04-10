@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from 'react';
-import styles from '../CommandBar.css';
+// import styles from '../CommandBar.css';
+import styles from './styles/Command.module.scss';
 import { LogicalSize, appWindow } from '@tauri-apps/api/window';
 
 //
 interface WrapperProps {
 	children: React.ReactNode;
-	theme: string;
+	theme?: string;
 }
 
 export const Wrapper = (props: WrapperProps) => {
@@ -21,7 +22,8 @@ export const Wrapper = (props: WrapperProps) => {
 			// 	e[0].borderBoxSize[0].inlineSize,
 			// 	e[0].borderBoxSize[0].blockSize
 			// );
-			const width = e[0].borderBoxSize[0].inlineSize;
+			const width = 700;
+			// const width = 650;
 			const height = e[0].borderBoxSize[0].blockSize;
 			//
 			appWindow.setSize(new LogicalSize(width, height));
@@ -31,7 +33,7 @@ export const Wrapper = (props: WrapperProps) => {
 	}, []);
 	// render
 	return (
-		<div ref={ref} className={`${props.theme} ${styles.commandBarContainer}`}>
+		<div ref={ref} className={styles.commandBarContainer}>
 			{props.children}
 		</div>
 	);
