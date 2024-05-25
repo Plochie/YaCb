@@ -1,15 +1,11 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
+import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
-	plugins: [
-		react(),
-		vanillaExtractPlugin({ identifiers: 'debug' }),
-		nodePolyfills(),
-	],
+	plugins: [react(), nodePolyfills()],
 
 	// Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
 	// prevent vite from obscuring rust errors
@@ -26,16 +22,23 @@ export default defineConfig(async () => ({
 		// Tauri supports es2021
 		target: process.env.TAURI_PLATFORM === 'windows' ? 'chrome105' : 'safari13',
 		// don't minify for debug builds
-		minify: !process.env.TAURI_DEBUG ? 'esbuild' : false,
+		minify: (!process.env.TAURI_DEBUG ? 'esbuild' : false) as boolean,
 		// produce sourcemaps for debug builds
 		sourcemap: !!process.env.TAURI_DEBUG,
 	},
 	resolve: {
-		alias: {
-			'app-src': '/src',
-			'app-components': '/src/components',
-			'app-config': '/src/config',
-			'app-store': '/src/store',
-		},
+		alias: [
+			{ find: 'app-src', replacement: path.resolve(__dirname, 'src') },
+			// 'app-src': '/src',
+			// { find: 'app-lib', replacement: path.resolve(__dirname, 'lib') },
+			{
+				find: '@yacb-core-lib',
+				replacement: path.resolve(__dirname, '../yacb-core2/lib'),
+			},
+			// {
+			// 	find: '@lib',
+			// 	replacement: path.resolve(__dirname, '../yacb-core2/lib'),
+			// },
+		],
 	},
 }));

@@ -1,17 +1,5 @@
-import Command from 'app-components/command/cmd-components';
 import { FcSettings } from 'react-icons/fc';
-import { TriggerWordAction, UserAction } from '..';
-
-/**
- *
- * @param param0
- * @returns
- */
-const settingsAction: TriggerWordAction = () => {
-	return new Promise((resolve) => {
-		resolve({ success: { items: [] } });
-	});
-};
+import { Command, OnInputChangeParams } from '@yacb-core-lib';
 
 /**
  *
@@ -20,7 +8,7 @@ const RenderGroup = () => {
 	// const _triggerResult = useTriggerResult(RenderGroup);
 	//
 	return (
-		<Command.Group title="Settings" activation="s">
+		<Command.Group title="Settings" activation="s" id="settings">
 			<Command.Item
 				title="Global Shortcut"
 				icon={<FcSettings />}
@@ -33,10 +21,4 @@ const RenderGroup = () => {
 			</Command.Item>
 		</Command.Group>
 	);
-};
-
-export const SettingsActions: UserAction = {
-	resultGroup: RenderGroup,
-	action: settingsAction,
-	word: 's ',
 };

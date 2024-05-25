@@ -1,71 +1,46 @@
-import Command from 'app-components/command/cmd-components';
-import { useInputKeyChangeEvent } from 'app-src/components/command/hooks';
-import { invoke } from 'app-src/wrapper/ipc-wrapper';
+import { Command, OnInputChangeParams } from '@yacb-core-lib';
+import { invoke, writeToClipboard } from '@yacb-core-lib/io';
 import { useState } from 'react';
 import { FcDownRight, FcFile, FcOpenedFolder } from 'react-icons/fc';
-import { TriggerWordAction } from '..';
-import { writeToClipboard } from 'app-src/wrapper/ipc-wrapper';
-/**
- *
- * @param param0
- * @returns
- */
-const openResourceAction: TriggerWordAction = ({ query }) => {
-	if (query.length > 1) {
-		//
-		return new Promise((resolve, reject) => {
-			//
-			// setIsActionLoading(true);
-			const invokePromise = invoke<{ path: string; t: string }[]>(
-				'get_matched_files',
-				{
-					query: `${query}`,
-				}
-			);
-			//
-			invokePromise.then((indexedContent) =>
-				resolve({
-					success: {
-						items: indexedContent.map((i) => ({ title: i.path, data: i })),
-					},
-				})
-			);
-			//
-			invokePromise.catch((err) => reject(err));
-			//
-			invokePromise.finally(() => {
-				// setIsActionLoading(false);
-			});
-		});
-	} //
-	return new Promise((resolve) => {
-		resolve({});
-	});
-};
+
+interface ListItem {
+	title: string;
+	data: { path: string; t: string };
+}
 
 /**
  *
  */
 export const OpenResourceAction = () => {
 	//
-	const [items, setItems] = useState<
-		{ title: string; data: { path: string; t: string } }[]
-	>([]);
+	const [items, setItems] = useState<ListItem[]>([]);
 	//
 
-	useInputKeyChangeEvent(({ detail }) => {
-		if (detail.currInput.trim() === '') {
+	const onInputChange = async (e: OnInputChangeParams) => {
+		const query = e.currentInput.trim();
+		if (query === '') {
 			setItems([]);
 		}
-		return openResourceAction({ query: detail.currInput }).then((d) => {
-			if (d.success) {
-				setItems(d.success.items as any);
-			}
-		});
-	});
+		if (query.length > 1) {
+			// const items = await openResourceAction(query);
+			const data = await invoke<{ path: string; t: string }[]>(
+				'get_matched_files',
+				{
+					query: `${query}`,
+				}
+			);
+			const items = data.map((i) => ({ title: i.path, data: i }));
+			setItems(items);
+		}
+	};
 	//
 	return (
-		<Command.Group title="Open Resource" activation="o">
+		<Command.Group
+			title="Open Resource"
+			activation="o"
+			id="open_resource"
+			onInputChange={onInputChange}
+		>
 			<Command.GenericItem>
 				Not finding what you&apos;ve looking for, Refresh index{' '}
 			</Command.GenericItem>

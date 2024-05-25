@@ -1,6 +1,4 @@
-import Command, {
-	OnInputChangeParams,
-} from 'app-components/command/cmd-components';
+import { Command, OnInputChangeParams } from '@yacb-core-lib';
 import Mexp from 'math-expression-evaluator';
 import { useState } from 'react';
 import { FcCalculator } from 'react-icons/fc';
@@ -33,6 +31,7 @@ export const MathEvalAction = () => {
 	return (
 		<Command.Group
 			title="Answer"
+			id="math_eval"
 			activation={ACTIVATION}
 			onInputChange={onInputChange}
 		>

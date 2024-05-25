@@ -1,27 +1,28 @@
-import React, { useEffect } from 'react';
-import { CommandBar } from './components';
 import {
 	appWindow,
 	invoke,
 	isShortcutRegistered,
 	registerShortcut,
-} from './wrapper/ipc-wrapper';
-import { BrowserRouter, Route, Link, Routes } from 'react-router-dom';
-import { ColorPickerWindow } from './windows';
+} from '@yacb-core-lib/io';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { CommandBar } from './components';
+import { SettingWindow } from './windows';
 //
 //
 function App() {
 	const [isOpen, setIsOpen] = React.useState(true);
 
 	useEffect(() => {
-		// (async () => {
-		// 	if (!(await isShortcutRegistered('F15'))) {
-		// 		await registerShortcut('F15', () => {
-		// 			console.log('Shortcut triggered from fe');
-		// 			// setIsOpen((s) => !s);
-		// 		});
-		// 	}
-		// })();
+		(async () => {
+			if (!(await isShortcutRegistered('F15'))) {
+				await registerShortcut('F15', async () => {
+					// console.log('Shortcut triggered from fe');
+					setIsOpen((s) => !s);
+					await appWindow.setFocus();
+				});
+			}
+		})();
 	});
 
 	//
@@ -29,6 +30,7 @@ function App() {
 		(async (o) => {
 			if (o) {
 				await appWindow.show();
+				await appWindow.setFocus();
 				await invoke('backend_logging', { msg: 'window should be open' });
 			} //
 			else {
@@ -50,13 +52,10 @@ function App() {
 						</div>
 					}
 				></Route>
-				<Route path="/settings_window" />
-				<Route path="/color_picker_window" element={<ColorPickerWindow />} />
+				<Route path="/settings_window" element={<SettingWindow />} />
+				{/* <Route path="/color_picker_window" element={<ColorPickerWindow />} /> */}
 			</Routes>
 		</BrowserRouter>
-		// <div className={styles.app}>
-		// 	<CommandBar></CommandBar>
-		// </div>
 	);
 }
 

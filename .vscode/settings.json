@@ -5,6 +5,7 @@
 		"cmdk",
 		"cpus",
 		"fullscreen",
+		"Immer",
 		"kbar",
 		"Mantine",
 		"mexp",
@@ -15,7 +16,9 @@
 		"rdev",
 		"tauri",
 		"thiserror",
+		"todos",
 		"vercel",
+		"Wled",
 		"zustand"
 	],
 	"cSpell.ignorePaths": [

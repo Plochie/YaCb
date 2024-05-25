@@ -1,10 +1,9 @@
-import Command from 'app-components/command/cmd-components';
-import { invoke } from 'app-src/wrapper/ipc-wrapper';
-import { Action } from '..';
+import { Command } from '@yacb-core-lib';
+import { invoke } from '@yacb-core-lib/io';
 
-const RenderElement = () => {
+export const RunTerminalAction = () => {
 	return (
-		<Command.Group title="Terminal" activation=">">
+		<Command.Group title="Terminal" activation=">" id="run_terminal">
 			<Command.Item
 				title="⌨️&nbsp;&nbsp;&nbsp;&nbsp;Run terminal command"
 				onClick={() => {

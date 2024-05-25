@@ -1,14 +1,8 @@
-import {
-	LogicalPosition,
-	LogicalSize,
-	PhysicalPosition,
-	PhysicalSize,
-	appWindow,
-} from '@tauri-apps/api/window';
-import { invoke } from 'app-src/wrapper/ipc-wrapper';
 import { useEffect, useRef } from 'react';
 import { PiDotsSixVerticalBold } from 'react-icons/pi';
 import { emit, listen } from '@tauri-apps/api/event';
+import { appWindow, invoke } from '@yacb-core-lib/io';
+import { PhysicalPosition, PhysicalSize } from '@tauri-apps/api/window';
 
 export function ColorPickerWindow() {
 	//

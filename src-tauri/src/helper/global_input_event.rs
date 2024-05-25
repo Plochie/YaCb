@@ -1,29 +1,9 @@
 use autopilot::mouse::MouseError;
-use rdev::{Event, EventType};
 use serde::{Deserialize, Serialize};
 use std::thread;
 use std::time::Instant;
 use tauri::{Manager, Window};
 // global
-pub fn callback(event: rdev::Event, window: Window) {
-    println!("My callback {:?}", event);
-
-    // window
-    //     .emit(
-    //         "event-name",
-    //         Payload {
-    //             message: "Tauri is awesome!".into(),
-    //         },
-    //     )
-    //     .unwrap();
-
-    // if let rdev::EventType
-
-    match event.name {
-        Some(string) => println!("User wrote {:?}", string),
-        None => (),
-    }
-}
 
 #[derive(Clone, serde::Serialize)]
 enum Payload {
@@ -57,23 +37,18 @@ pub fn start_input_event(window: Window) {
     //     )
     //     .unwrap();
     //
-
-    let _listener = thread::spawn(move || {
-        rdev::listen(move |event| {
-            if let EventType::MouseMove { x, y } = event.event_type {
-                // println!("value: {} {}", x, y);
-                window
-                    .emit("event-name", Payload::MouseMove { x, y })
-                    .unwrap();
-            }
-        })
-        .expect("Could not listen");
-    });
-
-    // _listener.
-
+    // let _listener = thread::spawn(move || {
+    //     rdev::listen(move |event| {
+    //         if let EventType::MouseMove { x, y } = event.event_type {
+    //             // println!("value: {} {}", x, y);
+    //             window
+    //                 .emit("event-name", Payload::MouseMove { x, y })
+    //                 .unwrap();
+    //         }
+    //     })
+    //     .expect("Could not listen");
+    // });
     // std::thread::spawn(|| rdev::listen(callback));
-    //
     let elapsed = now.elapsed().as_millis();
     info!("[start_input_event] Took {} milliseconds", elapsed);
 }

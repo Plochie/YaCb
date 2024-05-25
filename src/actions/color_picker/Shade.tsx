@@ -1,4 +1,4 @@
-import { writeToClipboard } from 'app-src/wrapper/ipc-wrapper';
+import { writeToClipboard } from '@yacb-core-lib/io';
 import { Colord, colord } from 'colord';
 import './ColorPicker.scss';
 import { COLOR_FORMATS } from './constant';

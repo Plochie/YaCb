@@ -13,15 +13,16 @@
 		"moduleResolution": "Node",
 		"resolveJsonModule": true,
 		"isolatedModules": true,
+		"strictNullChecks": true,
 		"noEmit": true,
 		"jsx": "react-jsx",
 		"baseUrl": "./",
 		"paths": {
 			"app-src/*": ["./src/*"],
-			"app-components/*": ["./src/components/*"],
-			"app-wrapper/*": ["./src/wrapper/*"],
-			"app-config/*": ["./src/config/*"],
-			"app-store/*": ["./src/store/*"]
+			"@yacb-core-lib": ["../yacb-core2/lib"],
+			"@yacb-core-lib/*": ["../yacb-core2/lib/*"]
+			// "@yacb-core": ["./src/*"]
+			// "app-lib/*": ["./src/lib/*"]
 		}
 	},
 	"include": ["src"],

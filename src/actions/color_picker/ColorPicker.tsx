@@ -1,14 +1,14 @@
-import Command from 'app-components/command/cmd-components';
+import { Command } from '@yacb-core-lib';
 import { Colord, colord, extend } from 'colord';
 import harmonies from 'colord/plugins/harmonies';
 import mixPlugin from 'colord/plugins/mix';
 import { useState } from 'react';
 import { HslaColorPicker } from 'react-colorful';
+import { LuPipette } from 'react-icons/lu';
 import './ColorPicker.scss';
 import { Shade } from './Shade';
 import { COLOR_FORMATS } from './constant';
-import { LuPipette } from 'react-icons/lu';
-import { openWindow } from 'app-src/wrapper/ipc-wrapper';
+import { openWindow } from '@yacb-core-lib/io';
 extend([mixPlugin, harmonies]);
 //
 export const ColorPickerAction = () => {
@@ -27,7 +27,7 @@ export const ColorPickerAction = () => {
 	};
 	//
 	return (
-		<Command.Group title="Color Picker" activation="c">
+		<Command.Group title="Color Picker" activation="c" id="color_picker">
 			<Command.GenericItem>
 				<div className="col">
 					{/*  */}

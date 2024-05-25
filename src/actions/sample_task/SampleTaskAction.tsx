@@ -1,29 +1,16 @@
-import Command from 'app-components/command/cmd-components';
-import { useInputKeyChangeEvent } from 'app-src/components/command/hooks';
+import { Command } from '@yacb-core-lib';
 import { useState } from 'react';
 import { RiTestTubeLine } from 'react-icons/ri';
-import { TriggerWordAction } from '..';
-import { Loader } from 'app-src/components/loader/Loader';
 
 //
 //
-export const RenderGroup = () => {
+export const SampleTaskAction = () => {
 	//
 	const [result, setResult] = useState<string | null>(null);
 	//
-	useInputKeyChangeEvent(({ detail }) => {
-		//
-		if (detail.currInput.trim() === '') {
-			setResult(null);
-		}
-		// console.log({ detail });
-		console.log('long running task started');
-		setResult('');
-	});
-	//
 	//
 	return (
-		<Command.Group title="Sample Task" activation="test">
+		<Command.Group title="Sample Task" activation="test" id="sample_task">
 			<Command.Item
 				title="Sample Task"
 				icon={<RiTestTubeLine />}
